@@ -1,0 +1,215 @@
+﻿<Controls:MetroWindow x:Class="Psalm_96.winMain"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:Editor="clr-namespace:FastColoredTextBoxNS;assembly=FastColoredTextBox"
+        Title="Psalm 96" Height="581" Width="765"
+        ResizeMode="CanResizeWithGrip" TitleCaps="False" WindowStartupLocation="CenterScreen" WindowTransitionsEnabled="False"
+        GlowBrush="{DynamicResource AccentColorBrush}" Closed="MetroWindow_Closed" Icon="/Psalm 96;component/Images/holybible.ico" PreviewKeyDown="MetroWindow_PreviewKeyDown" Closing="MetroWindow_Closing">
+
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+            <Button Content="VNLG"/>
+            
+            <Button Name="btnHelp" Click="btnHelp_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="15" Height="15" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_question}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0" VerticalAlignment="Center" Text="Help" />
+                </StackPanel>
+            </Button>
+            
+            <Button Name="btnAbout" Click="btnAbout_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="25" Height="25" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_futurama_fry}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0" VerticalAlignment="Center" Text="About" />
+                </StackPanel>
+            </Button>
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.3*" />
+            <ColumnDefinition Width="3" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" Name="gridSideLeft" SizeChanged="gridSideLeft_SizeChanged">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <StackPanel Orientation="Horizontal">
+                    <Button Width="40" Height="40" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" ToolTip="New Song" Name="btnNew" Click="btnNew_Click">
+                        <Rectangle Width="19" Height="19" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_page_new}"/>
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </Button>
+                    
+                    <Button Width="40" Height="40" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" ToolTip="Save" Name="btnSave" IsEnabled="False" Click="btnSave_Click">
+                        <Rectangle Width="19" Height="19" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_disk}"/>
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </Button>
+
+                    <Button Width="40" Height="40" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" ToolTip="Delete" Name="btnDelete" IsEnabled="False" Click="btnDelete_Click">
+                        <Rectangle Width="19" Height="19" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_delete}"/>
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <ListView Name="lstSong" SelectionChanged="lstSong_SelectionChanged" SelectionMode="Single" >
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Song Name" DisplayMemberBinding="{Binding SongName}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+
+            <Grid Grid.Row="2" Name="gridPreview" Background="Black">
+                <MediaElement Stretch="UniformToFill" Name="mediaElement" MediaEnded="mediaElement_MediaEnded" IsMuted="True" />
+
+                <Grid Name="grdText">
+                    <Viewbox>
+                        <Grid>
+                            <TextBlock Text="@@@@@@@@@@@@@@@@" TextAlignment="Center" Foreground="Transparent"/>
+                            <TextBlock TextAlignment="Center" Name="txtbPreview" Foreground="White" FontFamily="Georgia">
+                                <TextBlock.Effect>
+                                    <DropShadowEffect ShadowDepth="1" BlurRadius="2" />
+                                </TextBlock.Effect>
+                            </TextBlock>
+                        </Grid>
+                    </Viewbox>
+
+                    <Viewbox>
+                        <Grid>
+                            <TextBlock Text="@@@@@@@@@@@@@@@@" TextAlignment="Center" Foreground="Transparent"/>
+                            <TextBlock TextAlignment="Center" Name="txtbPreview2" Foreground="White" FontFamily="Georgia" Opacity="0">
+                                <TextBlock.Effect>
+                                    <DropShadowEffect ShadowDepth="1" BlurRadius="2" />
+                                </TextBlock.Effect>
+                            </TextBlock>
+                        </Grid>
+                    </Viewbox>
+                </Grid>
+
+                <Rectangle Fill="Black" Name="recBlackCover" Opacity="0" />
+            </Grid>
+        </Grid>
+
+        <GridSplitter
+            Grid.Column="1"
+            Background="{DynamicResource AccentColorBrush}"
+            HorizontalAlignment="Stretch"
+            ShowsPreview="True"
+            Width="3" />
+
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="26" />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
+            <Grid Grid.Row="0">
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox VerticalAlignment="Center" IsReadOnly="True" Width="132" Name="cbxVideo" SelectionChanged="cbxVideo_SelectionChanged" />
+
+                    <Label Content="Video Speed" VerticalAlignment="Center" />
+                    <Label Content="100%" VerticalAlignment="Center" Padding="0, 0, 5, 0" Name="lblVideoSpeed" Width="34" />
+                    <Slider Width="100" VerticalAlignment="Center" Maximum="200" Value="100" AutoToolTipPlacement="TopLeft" IsMoveToPointEnabled="True" SmallChange="1" Name="sldVideoSpeed" ValueChanged="sldVideoSpeed_ValueChanged" Minimum="1" />
+                    
+                    <Label Content="Transition Speed" VerticalAlignment="Center" />
+                    <Label Content="0.3s" VerticalAlignment="Center" Padding="0, 0, 5, 0" Name="lblTransitionSpeed" Width="25" />
+                    <Slider Width="100" VerticalAlignment="Center" Maximum="1" Value="0.3" AutoToolTipPlacement="TopLeft" IsMoveToPointEnabled="True" Name="sldTransitionSpeed" ValueChanged="sldTransitionSpeed_ValueChanged" Minimum="0" AutoToolTipPrecision="1" />
+                </StackPanel>
+            </Grid>
+
+            <Border Grid.Row="1" Background="{DynamicResource AccentColorBrush}" Height="1" />
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="50" />
+                </Grid.ColumnDefinitions>
+
+                <WindowsFormsHost Grid.Column="0">
+                    <Editor:FastColoredTextBox AutoIndent="False" AutoIndentChars="False" AllowDrop="False" HighlightFoldingIndicator="False" SelectionHighlightingForLineBreaksEnabled="False" AllowMacroRecording="False" x:Name="fctbContent" SelectionChanged="fctbContent_SelectionChanged" TextChanged="fctbContent_TextChanged" />
+                </WindowsFormsHost>
+
+                <Grid Grid.Column="1" Name="gridControl">
+                    <StackPanel>
+                        <Button Width="50" Height="50" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" Name="btnControlUp" ToolTip="Previous verse (F2 or Ctrl+Alt+Up)" Click="btnControlUp_Click">
+                            <Rectangle Width="23" Height="23" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_chevron_up}"/>
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </Button>
+
+                        <Button Width="50" Height="50" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" Name="btnControlDown" ToolTip="Next verse (F1 or Ctrl+Alt+Down)" Click="btnControlDown_Click">
+                            <Rectangle Width="23" Height="23" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_chevron_down}"/>
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </Button>
+
+                        <ToggleButton Width="50" Height="50" Style="{DynamicResource MetroCircleToggleButtonStyle}" VerticalAlignment="Top" Name="tgbtnControlSleep" Checked="tgbtnControlSleep_Checked" Unchecked="tgbtnControlSleep_Unchecked" ToolTip="Sleep mode (Ctrl+S)">
+                            <Rectangle Width="23" Height="23" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_moon_sleep}"/>
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </ToggleButton>
+
+                        <ToggleButton Width="50" Height="50" Style="{DynamicResource MetroCircleToggleButtonStyle}" VerticalAlignment="Top" Name="tgbtnControlDisplayText" ToolTip="Show/Hide Text (Ctrl+T)" IsChecked="True" Checked="tgbtnControlDisplayText_Checked" Unchecked="tgbtnControlDisplayText_Unchecked">
+                            <Rectangle Width="23" Height="23" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_control_guide}"/>
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </ToggleButton>
+
+                        <ToggleButton Width="50" Height="50" Style="{DynamicResource MetroCircleToggleButtonStyle}" VerticalAlignment="Top" Name="tgbtnControlDisplayPsalm" ToolTip="Show/Hide Psalm 96:1 (Ctrl+P)" Checked="tgbtnControlDisplayPsalm_Checked" Unchecked="tgbtnControlDisplayPsalm_Unchecked">
+                            <Rectangle Width="23" Height="23" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_monitor_play}"/>
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </ToggleButton>
+
+                        <ToggleButton Width="50" Height="50" Style="{DynamicResource MetroCircleToggleButtonStyle}" VerticalAlignment="Top" Name="tgbtnControlDisplay" Checked="tgbtnControlDisplay_Checked" Unchecked="tgbtnControlDisplay_Unchecked" ToolTip="Display  to projector (F5)">
+                            <Rectangle Width="23" Height="23" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_movie_clapper}"/>
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </ToggleButton>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Controls:MetroWindow>
