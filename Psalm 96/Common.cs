@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using System.Windows.Data;
+
 namespace Psalm_96
 {
     public class Common
@@ -19,5 +21,7 @@ namespace Psalm_96
 
         public const int VIDEO_SPEED = 100;
         public const double TRANSITION_SPEED = 0.3;
+
+        public static Binding vlcBinding = new Binding("VideoSource");
     }
 }

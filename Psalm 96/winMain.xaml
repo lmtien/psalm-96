@@ -88,7 +88,15 @@
             </Grid>
 
             <Grid Grid.Row="2" Name="gridPreview" Background="Black">
-                <MediaElement Stretch="UniformToFill" Name="mediaElement" MediaEnded="mediaElement_MediaEnded" IsMuted="True" />
+                <Grid>
+                    <Grid.Background>
+                        <VisualBrush Stretch="UniformToFill">
+                            <VisualBrush.Visual>
+                                <Image Name="vlcImage" />
+                            </VisualBrush.Visual>
+                        </VisualBrush >
+                    </Grid.Background>
+                </Grid>
 
                 <Grid Name="grdText">
                     <Viewbox>

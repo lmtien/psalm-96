@@ -17,6 +17,10 @@ using FastColoredTextBoxNS;
 using System.IO;
 using System.Collections.ObjectModel;
 using Newtonsoft.Json;
+using Vlc.DotNet.Wpf;
+using Vlc.DotNet.Core;
+using Vlc.DotNet.Core.Interops.Signatures.LibVlc.MediaListPlayer;
+using Vlc.DotNet.Core.Medias;
 
 namespace Psalm_96
 {
@@ -30,6 +34,7 @@ namespace Psalm_96
         string currentText;
         int currentSongIndex;
         ObservableCollection<Song> SongList = new ObservableCollection<Song>();
+        VlcControl vlcPlayer = new VlcControl();
 
         //init Display window
         winDisplay winDis = new winDisplay();
@@ -44,6 +49,42 @@ namespace Psalm_96
             InitVideo();
 
             InitSongList();
+
+            InitVlc();
+        }
+
+        /// <summary>
+        /// Pre Init all things need for VLC
+        /// </summary>
+        //private void PreInitVlc()
+        //{
+        //    //Set libvlc.dll and libvlccore.dll directory path
+        //    VlcContext.LibVlcDllsPath = CommonStrings.LIBVLC_DLLS_PATH_DEFAULT_VALUE_AMD64;
+        //    //Set the vlc plugins directory path
+        //    VlcContext.LibVlcPluginsPath = CommonStrings.PLUGINS_PATH_DEFAULT_VALUE_AMD64;
+
+        //    //Set the startup options
+        //    VlcContext.StartupOptions.IgnoreConfig = true;
+        //    VlcContext.StartupOptions.LogOptions.LogInFile = false;
+        //    VlcContext.StartupOptions.LogOptions.ShowLoggerConsole = false;
+
+        //    //Initialize the VlcContext
+        //    VlcContext.Initialize();
+        //}
+
+        /// <summary>
+        /// Init all stage for VLC
+        /// </summary>
+        private void InitVlc()
+        {
+            vlcPlayer.PlaybackMode = PlaybackModes.Repeat;
+            //vlcPlayer.AudioProperties.IsMute = true;
+            gridPreview.Children.Add(vlcPlayer);
+
+            //Binding
+            Common.vlcBinding.Source = vlcPlayer;
+            vlcImage.SetBinding(Image.SourceProperty, Common.vlcBinding);
+            winDis.DisplayVideo();
         }
 
         /// <summary>
@@ -202,8 +243,7 @@ namespace Psalm_96
         {
             lblVideoSpeed.Content = ((int)Math.Round(sldVideoSpeed.Value)).ToString() + "%";
             double ratio = sldVideoSpeed.Value / 100;
-            mediaElement.SpeedRatio = ratio;
-            winDis.SetSpeedRatio(ratio);
+            vlcPlayer.Rate = (float)ratio;
 
             SaveChangeEnable();
         }
@@ -230,13 +270,6 @@ namespace Psalm_96
         private void MetroWindow_Closed(object sender, EventArgs e)
         {
             Application.Current.Shutdown();
-        }
-
-        private void mediaElement_MediaEnded(object sender, RoutedEventArgs e)
-        {
-            mediaElement.Position = TimeSpan.Zero;
-            mediaElement.LoadedBehavior = MediaState.Manual;
-            mediaElement.Play();
         }
 
         private void tgbtnControlDisplayText_Checked(object sender, RoutedEventArgs e)
@@ -429,16 +462,14 @@ namespace Psalm_96
             string video = cbxVideo.SelectedValue.ToString();
             if (video.Equals(Common.VIDEO_NONE))
             {
-                mediaElement.Source = null;
-                winDis.DisplayVideo(null);
+                vlcPlayer.VideoSource = null;
             }
             else
             {
                 try
                 {
-                    Uri sr = new Uri(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, Common.VIDEO_DIR, video));
-                    mediaElement.Source = sr;
-                    winDis.DisplayVideo(sr);
+                    PathMedia sr = new PathMedia(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, Common.VIDEO_DIR, video));
+                    vlcPlayer.Media = sr;
                 }
                 catch (Exception ex)
                 {
@@ -599,6 +630,9 @@ namespace Psalm_96
             {
                 SaveChange(currentSongIndex);
             }
+
+            // Close the context. 
+            //VlcContext.CloseAll();
         }
     }
 }

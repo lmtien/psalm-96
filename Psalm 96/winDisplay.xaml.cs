@@ -28,7 +28,7 @@ namespace Psalm_96
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            int screen = 0;
+            int screen = 1;
             this.Left = Screen.AllScreens[screen].Bounds.Left;
             this.Top = Screen.AllScreens[screen].Bounds.Top;
             this.Width = Screen.AllScreens[screen].Bounds.Width;
@@ -39,14 +39,6 @@ namespace Psalm_96
         {
             e.Cancel = true;
             this.Hide();
-        }
-
-        /// <summary>
-        /// Set speed for the video
-        /// </summary>
-        public void SetSpeedRatio(double ratio)
-        {
-            mediaElement.SpeedRatio = ratio;
         }
 
         /// <summary>
@@ -101,19 +93,12 @@ namespace Psalm_96
             }
         }
 
-        private void mediaElement_MediaEnded(object sender, RoutedEventArgs e)
-        {
-            mediaElement.Position = TimeSpan.Zero;
-            mediaElement.LoadedBehavior = MediaState.Manual;
-            mediaElement.Play();
-        }
-
         /// <summary>
         /// Display video from source
         /// </summary>
-        public void DisplayVideo(Uri source)
+        public void DisplayVideo()
         {
-            mediaElement.Source = source;
+            vlcImage.SetBinding(Image.SourceProperty, Common.vlcBinding);
         }
     }
 }
