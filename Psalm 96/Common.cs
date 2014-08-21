@@ -16,7 +16,7 @@ namespace Psalm_96
         public const bool CURRENT_BACKGROUND = true;
 
         public const string VIDEO_DIR = "video";
-        public static string[] VIDEO_EXTS = new string[] { ".wmv" };
+        public static string[] VIDEO_EXTS = new string[] { ".wmv", ".mov", ".avi", ".mp4", ".mpeg" };
         public const string VIDEO_NONE = "--- NONE ---";
 
         public const int VIDEO_SPEED = 100;
