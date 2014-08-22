@@ -259,6 +259,7 @@ namespace Psalm_96
         private void tgbtnControlDisplay_Checked(object sender, RoutedEventArgs e)
         {
             winDis.Show();
+            winDis.SetScreenToFirstNonCurrent(System.Windows.Forms.Screen.FromControl(fctbContent));
             this.Focus();
             fctbContent.Focus();
         }

@@ -26,13 +26,22 @@ namespace Psalm_96
             InitializeComponent();
         }
 
-        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Set to set window to extend screen, but not current
+        /// </summary>
+        public void SetScreenToFirstNonCurrent(Screen current)
         {
-            int screen = 1;
-            this.Left = Screen.AllScreens[screen].Bounds.Left;
-            this.Top = Screen.AllScreens[screen].Bounds.Top;
-            this.Width = Screen.AllScreens[screen].Bounds.Width;
-            this.Height = Screen.AllScreens[screen].Bounds.Height;
+            foreach (Screen screen in Screen.AllScreens)
+            {
+                if (screen.Equals(current)) continue;
+
+                this.Left = screen.Bounds.Left;
+                this.Top = screen.Bounds.Top;
+                this.Width = screen.Bounds.Width;
+                this.Height = screen.Bounds.Height;
+
+                break;
+            }
         }
 
         private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
