@@ -28,7 +28,7 @@ namespace Psalm_96
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            int screen = 0;
+            int screen = 1;
             this.Left = Screen.AllScreens[screen].Bounds.Left;
             this.Top = Screen.AllScreens[screen].Bounds.Top;
             this.Width = Screen.AllScreens[screen].Bounds.Width;
