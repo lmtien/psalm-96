@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         GlowBrush="{DynamicResource AccentColorBrush}"
-        Title="Psalm 96" Height="300" Width="300" ShowCloseButton="True" ShowIconOnTitleBar="False" ShowInTaskbar="False" ShowMaxRestoreButton="False" ShowMinButton="False" ShowTitleBar="False" ShowWindowCommandsOnTop="False" TitleCaps="False" WindowStartupLocation="CenterScreen" Loaded="MetroWindow_Loaded" WindowStyle="None" ResizeMode="NoResize" Closing="MetroWindow_Closing" Topmost="True" Focusable="False" Icon="/Psalm 96;component/Images/holybible.ico">
+        Title="Psalm 96" Height="300" Width="300" ShowCloseButton="True" ShowIconOnTitleBar="False" ShowInTaskbar="False" ShowMaxRestoreButton="False" ShowMinButton="False" ShowTitleBar="False" ShowWindowCommandsOnTop="False" TitleCaps="False" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize" Closing="MetroWindow_Closing" Topmost="True" Focusable="False" Icon="/Psalm 96;component/Images/holybible.ico">
     <Grid Background="Black">
         <MediaElement Stretch="UniformToFill" Name="mediaElement" MediaEnded="mediaElement_MediaEnded" IsMuted="True" />
 
