@@ -260,6 +260,7 @@ namespace Psalm_96
         {
             winDis.Show();
             this.Focus();
+            fctbContent.Focus();
         }
 
         private void tgbtnControlDisplay_Unchecked(object sender, RoutedEventArgs e)
@@ -379,11 +380,13 @@ namespace Psalm_96
             {
                 case (Key.F1):
                     NextVerse();
+                    fctbContent.Focus();
                     e.Handled = true;
                     break;
 
                 case (Key.F2):
                     PreviousVerse();
+                    fctbContent.Focus();
                     e.Handled = true;
                     break;
 
@@ -396,6 +399,7 @@ namespace Psalm_96
                     {
                         tgbtnControlDisplay.IsChecked = true;
                     }
+                    fctbContent.Focus();
                     e.Handled = true;
                     break;
 
@@ -410,6 +414,7 @@ namespace Psalm_96
                         {
                             tgbtnControlSleep.IsChecked = true;
                         }
+                        fctbContent.Focus();
                         e.Handled = true;
                     }
                     break;
@@ -425,6 +430,7 @@ namespace Psalm_96
                         {
                             tgbtnControlDisplayText.IsChecked = true;
                         }
+                        fctbContent.Focus();
                         e.Handled = true;
                     }
                     break;
@@ -440,6 +446,7 @@ namespace Psalm_96
                         {
                             tgbtnControlDisplayPsalm.IsChecked = true;
                         }
+                        fctbContent.Focus();
                         e.Handled = true;
                     }
                     break;

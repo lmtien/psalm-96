@@ -51,7 +51,7 @@
 
             <Grid Grid.Row="0">
                 <StackPanel Orientation="Horizontal">
-                    <Button Width="40" Height="40" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" ToolTip="New Song" Name="btnNew" Click="btnNew_Click">
+                    <Button Width="40" Height="40" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" ToolTip="New Song" Name="btnNew" Click="btnNew_Click" TabIndex="11">
                         <Rectangle Width="19" Height="19" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
                             <Rectangle.OpacityMask>
                                 <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_page_new}"/>
@@ -59,7 +59,7 @@
                         </Rectangle>
                     </Button>
                     
-                    <Button Width="40" Height="40" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" ToolTip="Save" Name="btnSave" IsEnabled="False" Click="btnSave_Click">
+                    <Button Width="40" Height="40" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" ToolTip="Save" Name="btnSave" IsEnabled="False" Click="btnSave_Click" TabIndex="12">
                         <Rectangle Width="19" Height="19" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
                             <Rectangle.OpacityMask>
                                 <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_disk}"/>
@@ -67,7 +67,7 @@
                         </Rectangle>
                     </Button>
 
-                    <Button Width="40" Height="40" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" ToolTip="Delete" Name="btnDelete" IsEnabled="False" Click="btnDelete_Click">
+                    <Button Width="40" Height="40" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" ToolTip="Delete" Name="btnDelete" IsEnabled="False" Click="btnDelete_Click" TabIndex="13">
                         <Rectangle Width="19" Height="19" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
                             <Rectangle.OpacityMask>
                                 <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_delete}"/>
@@ -78,7 +78,7 @@
             </Grid>
 
             <Grid Grid.Row="1">
-                <ListView Name="lstSong" SelectionChanged="lstSong_SelectionChanged" SelectionMode="Single" >
+                <ListView Name="lstSong" SelectionChanged="lstSong_SelectionChanged" SelectionMode="Single" TabIndex="14">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Song Name" DisplayMemberBinding="{Binding SongName}" />
@@ -142,15 +142,15 @@
             
             <Grid Grid.Row="0">
                 <StackPanel Orientation="Horizontal">
-                    <ComboBox VerticalAlignment="Center" IsReadOnly="True" Width="132" Name="cbxVideo" SelectionChanged="cbxVideo_SelectionChanged" />
+                    <ComboBox VerticalAlignment="Center" IsReadOnly="True" Width="132" Name="cbxVideo" SelectionChanged="cbxVideo_SelectionChanged" TabIndex="8" />
 
                     <Label Content="Video Speed" VerticalAlignment="Center" />
                     <Label Content="100%" VerticalAlignment="Center" Padding="0, 0, 5, 0" Name="lblVideoSpeed" Width="34" />
-                    <Slider Width="100" VerticalAlignment="Center" Maximum="200" Value="100" AutoToolTipPlacement="TopLeft" IsMoveToPointEnabled="True" SmallChange="1" Name="sldVideoSpeed" ValueChanged="sldVideoSpeed_ValueChanged" Minimum="1" />
+                    <Slider Width="100" VerticalAlignment="Center" Maximum="200" Value="100" AutoToolTipPlacement="TopLeft" IsMoveToPointEnabled="True" SmallChange="1" Name="sldVideoSpeed" ValueChanged="sldVideoSpeed_ValueChanged" Minimum="1" TabIndex="9" />
                     
                     <Label Content="Transition Speed" VerticalAlignment="Center" />
                     <Label Content="0.3s" VerticalAlignment="Center" Padding="0, 0, 5, 0" Name="lblTransitionSpeed" Width="25" />
-                    <Slider Width="100" VerticalAlignment="Center" Maximum="1" Value="0.3" AutoToolTipPlacement="TopLeft" IsMoveToPointEnabled="True" Name="sldTransitionSpeed" ValueChanged="sldTransitionSpeed_ValueChanged" Minimum="0" AutoToolTipPrecision="1" />
+                    <Slider Width="100" VerticalAlignment="Center" Maximum="1" Value="0.3" AutoToolTipPlacement="TopLeft" IsMoveToPointEnabled="True" Name="sldTransitionSpeed" ValueChanged="sldTransitionSpeed_ValueChanged" Minimum="0" AutoToolTipPrecision="1" TabIndex="10" />
                 </StackPanel>
             </Grid>
 
@@ -162,13 +162,13 @@
                     <ColumnDefinition Width="50" />
                 </Grid.ColumnDefinitions>
 
-                <WindowsFormsHost Grid.Column="0">
+                <WindowsFormsHost Grid.Column="0" TabIndex="1">
                     <Editor:FastColoredTextBox AutoIndent="False" AutoIndentChars="False" AllowDrop="False" HighlightFoldingIndicator="False" SelectionHighlightingForLineBreaksEnabled="False" AllowMacroRecording="False" x:Name="fctbContent" SelectionChanged="fctbContent_SelectionChanged" TextChanged="fctbContent_TextChanged" />
                 </WindowsFormsHost>
 
                 <Grid Grid.Column="1" Name="gridControl">
                     <StackPanel>
-                        <Button Width="50" Height="50" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" Name="btnControlUp" ToolTip="Previous verse (F2 or Ctrl+Alt+Up)" Click="btnControlUp_Click">
+                        <Button Width="50" Height="50" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" Name="btnControlUp" ToolTip="Previous verse (F2 or Ctrl+Alt+Up)" Click="btnControlUp_Click" TabIndex="2">
                             <Rectangle Width="23" Height="23" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
                                 <Rectangle.OpacityMask>
                                     <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_chevron_up}"/>
@@ -176,7 +176,7 @@
                             </Rectangle>
                         </Button>
 
-                        <Button Width="50" Height="50" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" Name="btnControlDown" ToolTip="Next verse (F1 or Ctrl+Alt+Down)" Click="btnControlDown_Click">
+                        <Button Width="50" Height="50" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" Name="btnControlDown" ToolTip="Next verse (F1 or Ctrl+Alt+Down)" Click="btnControlDown_Click" TabIndex="3">
                             <Rectangle Width="23" Height="23" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
                                 <Rectangle.OpacityMask>
                                     <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_chevron_down}"/>
@@ -184,7 +184,7 @@
                             </Rectangle>
                         </Button>
 
-                        <ToggleButton Width="50" Height="50" Style="{DynamicResource MetroCircleToggleButtonStyle}" VerticalAlignment="Top" Name="tgbtnControlSleep" Checked="tgbtnControlSleep_Checked" Unchecked="tgbtnControlSleep_Unchecked" ToolTip="Sleep mode (Ctrl+S)">
+                        <ToggleButton Width="50" Height="50" Style="{DynamicResource MetroCircleToggleButtonStyle}" VerticalAlignment="Top" Name="tgbtnControlSleep" Checked="tgbtnControlSleep_Checked" Unchecked="tgbtnControlSleep_Unchecked" ToolTip="Sleep mode (Ctrl+S)" TabIndex="4">
                             <Rectangle Width="23" Height="23" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
                                 <Rectangle.OpacityMask>
                                     <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_moon_sleep}"/>
@@ -192,7 +192,7 @@
                             </Rectangle>
                         </ToggleButton>
 
-                        <ToggleButton Width="50" Height="50" Style="{DynamicResource MetroCircleToggleButtonStyle}" VerticalAlignment="Top" Name="tgbtnControlDisplayText" ToolTip="Show/Hide Text (Ctrl+T)" IsChecked="True" Checked="tgbtnControlDisplayText_Checked" Unchecked="tgbtnControlDisplayText_Unchecked">
+                        <ToggleButton Width="50" Height="50" Style="{DynamicResource MetroCircleToggleButtonStyle}" VerticalAlignment="Top" Name="tgbtnControlDisplayText" ToolTip="Show/Hide Text (Ctrl+T)" IsChecked="True" Checked="tgbtnControlDisplayText_Checked" Unchecked="tgbtnControlDisplayText_Unchecked" TabIndex="5">
                             <Rectangle Width="23" Height="23" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
                                 <Rectangle.OpacityMask>
                                     <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_control_guide}"/>
@@ -200,7 +200,7 @@
                             </Rectangle>
                         </ToggleButton>
 
-                        <ToggleButton Width="50" Height="50" Style="{DynamicResource MetroCircleToggleButtonStyle}" VerticalAlignment="Top" Name="tgbtnControlDisplayPsalm" ToolTip="Show/Hide Psalm 96:1 (Ctrl+P)" Checked="tgbtnControlDisplayPsalm_Checked" Unchecked="tgbtnControlDisplayPsalm_Unchecked">
+                        <ToggleButton Width="50" Height="50" Style="{DynamicResource MetroCircleToggleButtonStyle}" VerticalAlignment="Top" Name="tgbtnControlDisplayPsalm" ToolTip="Show/Hide Psalm 96:1 (Ctrl+P)" Checked="tgbtnControlDisplayPsalm_Checked" Unchecked="tgbtnControlDisplayPsalm_Unchecked" TabIndex="6">
                             <Rectangle Width="23" Height="23" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
                                 <Rectangle.OpacityMask>
                                     <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_monitor_play}"/>
@@ -208,7 +208,7 @@
                             </Rectangle>
                         </ToggleButton>
 
-                        <ToggleButton Width="50" Height="50" Style="{DynamicResource MetroCircleToggleButtonStyle}" VerticalAlignment="Top" Name="tgbtnControlDisplay" Checked="tgbtnControlDisplay_Checked" Unchecked="tgbtnControlDisplay_Unchecked" ToolTip="Display  to projector (F5)">
+                        <ToggleButton Width="50" Height="50" Style="{DynamicResource MetroCircleToggleButtonStyle}" VerticalAlignment="Top" Name="tgbtnControlDisplay" Checked="tgbtnControlDisplay_Checked" Unchecked="tgbtnControlDisplay_Unchecked" ToolTip="Display  to projector (F5)" TabIndex="7">
                             <Rectangle Width="23" Height="23" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
                                 <Rectangle.OpacityMask>
                                     <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_movie_clapper}"/>
