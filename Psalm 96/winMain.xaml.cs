@@ -48,6 +48,8 @@ namespace Psalm_96
 
             InitVideo();
 
+            InitImage();
+
             InitSongList();
 
             InitVlc();
@@ -98,13 +100,32 @@ namespace Psalm_96
             //add none first
             cbxVideo.Items.Add(Common.VIDEO_NONE);
 
-            List<string> video = GetFiles(Common.VIDEO_DIR);
+            List<string> video = GetFiles(Common.VIDEO_DIR, Common.VIDEO_EXTS);
             foreach (string v in video)
             {
                 cbxVideo.Items.Add(System.IO.Path.GetFileName(v));
             }
 
             cbxVideo.SelectedIndex = 0;
+        }
+
+        /// <summary>
+        /// Init image folder, and add to combobox item
+        /// </summary>
+        private void InitImage()
+        {
+            //create folder video
+            Directory.CreateDirectory(Common.IMAGE_DIR);
+
+            List<string> image = GetFiles(Common.IMAGE_DIR, Common.IMAGE_EXTS);
+            foreach (string img in image)
+            {
+                cbxVideo.Items.Add(System.IO.Path.GetFileName(img));
+            }
+
+            //Binding
+            Common.imgBinding.Source = imgPreview;
+            winDis.DisplayImage();
         }
 
         /// <summary>
@@ -136,9 +157,9 @@ namespace Psalm_96
         /// <summary>
         /// Return all files in folder, with pre-define filters in Common.cs
         /// </summary>
-        private List<string> GetFiles(string path)
+        private List<string> GetFiles(string path, string[] EXTS)
         {
-            return Directory.EnumerateFiles(path, "*.*", SearchOption.TopDirectoryOnly).Where(f => Common.VIDEO_EXTS.Contains(System.IO.Path.GetExtension(f).ToLower())).OrderBy(x => x).ToList();
+            return Directory.EnumerateFiles(path, "*.*", SearchOption.TopDirectoryOnly).Where(f => EXTS.Contains(System.IO.Path.GetExtension(f).ToLower())).OrderBy(x => x).ToList();
         }
 
         private void gridSideLeft_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -153,7 +174,11 @@ namespace Psalm_96
 
         private void btnAbout_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Copyright © 2014 by Tidus Le\nAll Rights Reserved\nAll Wrongs Rejected\n\nFeedback: Lmtien9116@gmail.com\nVietnamese Community\nHope Church Singapore", "About");
+            //Hope Church
+            MessageBox.Show("Copyright © 2014 by Tidus Le\nAll Rights Reserved\nAll Wrongs Rejected\n\nFeedback: Lmtien9116@gmail.com\nVietnamese Community\nHope Church Singapore\n\nThis is totally FREE software.\nBut please send me an email.\nSo that I can inform and send you new update version.\nThank you for using this software!", "About");
+
+            //Bethel Church
+            //MessageBox.Show("Copyright © 2014 by Tidus Le\nAll Rights Reserved\nAll Wrongs Rejected\n\nFeedback: Lmtien9116@gmail.com\nBethel Evangelical Church Vietnam\n\nThis is totally FREE software.\nBut please send me an email.\nSo that I can inform and send you new update version.\nThank you for using this software!", "About");
         }
 
         private void fctbContent_SelectionChanged(object sender, EventArgs e)
@@ -288,8 +313,8 @@ namespace Psalm_96
 
         private void tgbtnControlDisplayPsalm_Checked(object sender, RoutedEventArgs e)
         {
-            string psalm = @"Sing to the Lord a new song             
-         Sing to the Lord, all the earth   
+            string psalm = @"Sing to the Lord a new song;             
+         Sing to the Lord, all the earth.   
                                                 Psalm 96:1   ";
             DisplayText(psalm);
         }
@@ -467,21 +492,32 @@ namespace Psalm_96
 
         private void cbxVideo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string video = cbxVideo.SelectedValue.ToString();
-            if (video.Equals(Common.VIDEO_NONE))
+            string fileName = cbxVideo.SelectedValue.ToString();
+            if (fileName.Equals(Common.VIDEO_NONE))
             {
                 vlcPlayer.VideoSource = null;
+                imgPreview.Source = null;
             }
             else
             {
-                try
+                //check video
+                if (Common.VIDEO_EXTS.Contains(System.IO.Path.GetExtension(fileName).ToLower()))
                 {
-                    PathMedia sr = new PathMedia(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, Common.VIDEO_DIR, video));
-                    vlcPlayer.Media = sr;
+                    imgPreview.Source = null;
+                    try
+                    {
+                        PathMedia sr = new PathMedia(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, Common.VIDEO_DIR, fileName));
+                        vlcPlayer.Media = sr;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Cannot open video file. Please try again later!\n\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
-                catch (Exception ex)
+                else //image
                 {
-                    MessageBox.Show("Cannot open video file. Please try again later!\n\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    vlcPlayer.VideoSource = null;
+                    imgPreview.Source = new BitmapImage(new Uri(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, Common.IMAGE_DIR, fileName)));
                 }
             }
 

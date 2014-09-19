@@ -109,5 +109,13 @@ namespace Psalm_96
         {
             vlcImage.SetBinding(Image.SourceProperty, Common.vlcBinding);
         }
+
+        /// <summary>
+        /// Display image from source
+        /// </summary>
+        public void DisplayImage()
+        {
+            imgBackground.SetBinding(Image.SourceProperty, Common.imgBinding);
+        }
     }
 }

@@ -10,6 +10,7 @@
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
             <Button Content="VNLG"/>
+            <!--<Button Content="Bethel Evangelical Church"/>-->
             
             <Button Name="btnHelp" Click="btnHelp_Click">
                 <StackPanel Orientation="Horizontal">
@@ -88,6 +89,8 @@
             </Grid>
 
             <Grid Grid.Row="2" Name="gridPreview" Background="Black">
+                <Image Name="imgPreview" Stretch="UniformToFill" />
+                
                 <Grid>
                     <Grid.Background>
                         <VisualBrush Stretch="UniformToFill">
@@ -121,8 +124,9 @@
                         </Grid>
                     </Viewbox>
                 </Grid>
-
+                
                 <Rectangle Fill="Black" Name="recBlackCover" Opacity="0" />
+                
             </Grid>
         </Grid>
 

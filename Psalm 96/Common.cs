@@ -17,11 +17,14 @@ namespace Psalm_96
 
         public const string VIDEO_DIR = "video";
         public static string[] VIDEO_EXTS = new string[] { ".wmv", ".mov", ".avi", ".mp4", ".mpeg" };
+        public const string IMAGE_DIR = "image";
+        public static string[] IMAGE_EXTS = new string[] { ".jpg", ".bmp", ".png", ".tif" };
         public const string VIDEO_NONE = "--- NONE ---";
 
         public const int VIDEO_SPEED = 100;
         public const double TRANSITION_SPEED = 0.3;
 
         public static Binding vlcBinding = new Binding("VideoSource");
+        public static Binding imgBinding = new Binding("Source");
     }
 }
