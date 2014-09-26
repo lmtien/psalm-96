@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:Editor="clr-namespace:FastColoredTextBoxNS;assembly=FastColoredTextBox"
-        Title="Psalm 96" Height="581" Width="765"
+        Title="Psalm 96" Height="581" Width="775"
         ResizeMode="CanResizeWithGrip" TitleCaps="False" WindowStartupLocation="CenterScreen" WindowTransitionsEnabled="False"
         GlowBrush="{DynamicResource AccentColorBrush}" Closed="MetroWindow_Closed" Icon="/Psalm 96;component/Images/holybible.ico" PreviewKeyDown="MetroWindow_PreviewKeyDown" Closing="MetroWindow_Closing">
 
@@ -38,7 +38,7 @@
     
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.365*" />
+            <ColumnDefinition Width="0.35*" />
             <ColumnDefinition Width="3" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
