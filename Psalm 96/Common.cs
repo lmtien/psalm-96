@@ -4,12 +4,16 @@ using System.Linq;
 using System.Text;
 
 using System.Windows.Data;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace Psalm_96
 {
     public class Common
     {
         //Define constant
+        public static string VERSION = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion;
+
         public const string DATA_DIR = "data";
         public const string DATA_EXTS = ".lmt";
 

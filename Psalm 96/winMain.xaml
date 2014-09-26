@@ -38,57 +38,106 @@
     
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.3*" />
+            <ColumnDefinition Width="0.365*" />
             <ColumnDefinition Width="3" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0" Name="gridSideLeft" SizeChanged="gridSideLeft_SizeChanged">
             <Grid.RowDefinitions>
-                <RowDefinition Height="40" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
-                <StackPanel Orientation="Horizontal">
-                    <Button Width="40" Height="40" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" ToolTip="New Song" Name="btnNew" Click="btnNew_Click" TabIndex="11">
-                        <Rectangle Width="19" Height="19" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_page_new}"/>
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
-                    </Button>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.5*" />
+                    <RowDefinition Height="3" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                
+                <Grid Grid.Row="0">
+                    <ListView Name="lstPlaylist" TabIndex="17" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="0" SelectionChanged="lstPlaylist_SelectionChanged">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Playlist" DisplayMemberBinding="{Binding SongName}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+
+                <GridSplitter
+                    Grid.Row="1"
+                    Background="{DynamicResource AccentColorBrush}"
+                    HorizontalAlignment="Stretch"
+                    ShowsPreview="True"
+                    Height="3" />
+
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
                     
-                    <Button Width="40" Height="40" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" ToolTip="Save" Name="btnSave" IsEnabled="False" Click="btnSave_Click" TabIndex="12">
-                        <Rectangle Width="19" Height="19" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_disk}"/>
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
-                    </Button>
+                    <Grid Grid.Row="0">
+                        <StackPanel Orientation="Horizontal">
+                            <Button Width="40" Height="40" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" ToolTip="New Song" Name="btnNew" Click="btnNew_Click" TabIndex="11">
+                                <Rectangle Width="19" Height="19" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_page_new}"/>
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </Button>
+                    
+                            <Button Width="40" Height="40" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" ToolTip="Save" Name="btnSave" IsEnabled="False" Click="btnSave_Click" TabIndex="12">
+                                <Rectangle Width="19" Height="19" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_disk}"/>
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </Button>
 
-                    <Button Width="40" Height="40" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" ToolTip="Delete" Name="btnDelete" IsEnabled="False" Click="btnDelete_Click" TabIndex="13">
-                        <Rectangle Width="19" Height="19" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_delete}"/>
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
-                    </Button>
-                </StackPanel>
+                            <Button Width="40" Height="40" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" ToolTip="Delete" Name="btnDelete" IsEnabled="False" Click="btnDelete_Click" TabIndex="13">
+                                <Rectangle Width="19" Height="19" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_delete}"/>
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </Button>
+
+                            <Border Background="{DynamicResource AccentColorBrush}" Width="1" />
+
+                            <Button Width="40" Height="40" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" ToolTip="Add to playlist" Name="btnPlaylistAdd" IsEnabled="False" TabIndex="14" Click="btnPlaylistAdd_Click">
+                                <Rectangle Width="19" Height="19" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_layer_up}"/>
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </Button>
+
+                            <Button Width="40" Height="40" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" ToolTip="Remove from playlist" Name="btnPlaylistRemove" IsEnabled="False" TabIndex="15" Click="btnPlaylistRemove_Click">
+                                <Rectangle Width="19" Height="19" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_layer_down}"/>
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Grid.Row="1">
+                        <ListView Name="lstSong" SelectionChanged="lstSong_SelectionChanged" TabIndex="16" BorderBrush="{DynamicResource AccentColorBrush}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Song Name" DisplayMemberBinding="{Binding SongName}" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </Grid>
             </Grid>
 
-            <Grid Grid.Row="1">
-                <ListView Name="lstSong" SelectionChanged="lstSong_SelectionChanged" SelectionMode="Single" TabIndex="14">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Song Name" DisplayMemberBinding="{Binding SongName}" />
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </Grid>
-
-            <Grid Grid.Row="2" Name="gridPreview" Background="Black">
+            <Grid Grid.Row="1" Name="gridPreview" Background="Black">
                 <Image Name="imgPreview" Stretch="UniformToFill" />
                 
                 <Grid>
