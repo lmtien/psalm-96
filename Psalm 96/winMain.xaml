@@ -221,7 +221,7 @@
 
                 <Grid Grid.Column="1" Name="gridControl">
                     <StackPanel>
-                        <Button Width="50" Height="50" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" Name="btnControlUp" ToolTip="Previous verse (F2 or Ctrl+Alt+Up)" Click="btnControlUp_Click" TabIndex="2">
+                        <Button Width="50" Height="50" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" Name="btnControlUp" ToolTip="Previous verse (F2 or Alt+X)" Click="btnControlUp_Click" TabIndex="2">
                             <Rectangle Width="23" Height="23" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
                                 <Rectangle.OpacityMask>
                                     <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_chevron_up}"/>
@@ -229,7 +229,7 @@
                             </Rectangle>
                         </Button>
 
-                        <Button Width="50" Height="50" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" Name="btnControlDown" ToolTip="Next verse (F1 or Ctrl+Alt+Down)" Click="btnControlDown_Click" TabIndex="3">
+                        <Button Width="50" Height="50" Style="{DynamicResource MetroCircleButtonStyle}" VerticalAlignment="Top" Name="btnControlDown" ToolTip="Next verse (F1 or Alt+Z)" Click="btnControlDown_Click" TabIndex="3">
                             <Rectangle Width="23" Height="23" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
                                 <Rectangle.OpacityMask>
                                     <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_chevron_down}"/>
@@ -237,7 +237,7 @@
                             </Rectangle>
                         </Button>
 
-                        <ToggleButton Width="50" Height="50" Style="{DynamicResource MetroCircleToggleButtonStyle}" VerticalAlignment="Top" Name="tgbtnControlSleep" Checked="tgbtnControlSleep_Checked" Unchecked="tgbtnControlSleep_Unchecked" ToolTip="Sleep mode (Ctrl+S)" TabIndex="4">
+                        <ToggleButton Width="50" Height="50" Style="{DynamicResource MetroCircleToggleButtonStyle}" VerticalAlignment="Top" Name="tgbtnControlSleep" Checked="tgbtnControlSleep_Checked" Unchecked="tgbtnControlSleep_Unchecked" ToolTip="Sleep mode (Alt+S)" TabIndex="4">
                             <Rectangle Width="23" Height="23" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
                                 <Rectangle.OpacityMask>
                                     <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_moon_sleep}"/>
@@ -245,7 +245,7 @@
                             </Rectangle>
                         </ToggleButton>
 
-                        <ToggleButton Width="50" Height="50" Style="{DynamicResource MetroCircleToggleButtonStyle}" VerticalAlignment="Top" Name="tgbtnControlDisplayText" ToolTip="Show/Hide Text (Ctrl+T)" IsChecked="True" Checked="tgbtnControlDisplayText_Checked" Unchecked="tgbtnControlDisplayText_Unchecked" TabIndex="5">
+                        <ToggleButton Width="50" Height="50" Style="{DynamicResource MetroCircleToggleButtonStyle}" VerticalAlignment="Top" Name="tgbtnControlDisplayText" ToolTip="Show/Hide Text (Alt+T)" IsChecked="True" Checked="tgbtnControlDisplayText_Checked" Unchecked="tgbtnControlDisplayText_Unchecked" TabIndex="5">
                             <Rectangle Width="23" Height="23" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
                                 <Rectangle.OpacityMask>
                                     <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_control_guide}"/>
@@ -253,7 +253,7 @@
                             </Rectangle>
                         </ToggleButton>
 
-                        <ToggleButton Width="50" Height="50" Style="{DynamicResource MetroCircleToggleButtonStyle}" VerticalAlignment="Top" Name="tgbtnControlDisplayPsalm" ToolTip="Show/Hide Psalm 96:1 (Ctrl+P)" Checked="tgbtnControlDisplayPsalm_Checked" Unchecked="tgbtnControlDisplayPsalm_Unchecked" TabIndex="6">
+                        <ToggleButton Width="50" Height="50" Style="{DynamicResource MetroCircleToggleButtonStyle}" VerticalAlignment="Top" Name="tgbtnControlDisplayPsalm" ToolTip="Show/Hide Psalm 96:1 (Alt+P)" Checked="tgbtnControlDisplayPsalm_Checked" Unchecked="tgbtnControlDisplayPsalm_Unchecked" TabIndex="6">
                             <Rectangle Width="23" Height="23" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
                                 <Rectangle.OpacityMask>
                                     <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_monitor_play}"/>
@@ -265,6 +265,14 @@
                             <Rectangle Width="23" Height="23" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
                                 <Rectangle.OpacityMask>
                                     <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_movie_clapper}"/>
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </ToggleButton>
+
+                        <ToggleButton Width="50" Height="50" Style="{DynamicResource MetroCircleToggleButtonStyle}" VerticalAlignment="Top" Name="tgbtnControlLockVideo" ToolTip="Lock/Unlock Video (Alt+V)" TabIndex="8">
+                            <Rectangle Width="23" Height="23" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_unlock_keyhole}"/>
                                 </Rectangle.OpacityMask>
                             </Rectangle>
                         </ToggleButton>

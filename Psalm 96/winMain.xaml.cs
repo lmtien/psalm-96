@@ -176,7 +176,7 @@ namespace Psalm_96
 
         private void btnHelp_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Add // to comment a line\nBookmark Line = Ctrl + B\nClear Word Left = Ctrl + Back\nClear Word Right = Ctrl + Del\nColumn Selection Mode = Alt + Left Mouse\nCopy = Ctrl + C\nCopy = Ctrl + Ins\nCut = Ctrl + X\nCut = Shift + Del\nDisplay To Projector = F5\nFind Dialog = Ctrl + F\nFind Next = F3\nGo Down in Column Selection Mode = Alt + Shift + Down\nGo Left in Column Selection Mode = Alt + Shift + Left\nGo Right in Column Selection Mode = Alt + Shift + Right\nGo Up in Column Selection Mode = Alt + Shift + Up\nGoTo Dialog = Ctrl + G\nLowerCase = Ctrl + Shift + U\nMove Selected Lines Down = Alt + Down\nMove Selected Lines Up = Alt + Up\nNext Bookmark = Ctrl + N\nNext Verse = F1\nNext Verse = Ctrl + Alt + Down\nPaste = Shift + Ins\nPrevious Bookmark = Ctrl + Shift + N\nPrevious Verse = F2\nPrevious Verse = Ctrl + Alt + Up\nRedo = Ctrl + R\nReplace Dialog = Ctrl + H\nScroll Down = Ctrl + Down\nScroll Up = Ctrl + Up\nShow/Hide Psalm 96:1 = Ctrl + P\nShow/Hide Text = Ctrl + T\nSleep Mode = Ctrl + S\nUnbookmark Line = Ctrl + Shift + B\nUndo = Alt + Back\nUndo = Ctrl + Z\nUpperCase = Ctrl + U\nZoom In = Ctrl + Add\nZoom In = Ctrl + Mouse Wheel Down\nZoom In = Ctrl + Mouse Wheel Up\nZoom Normal = Ctrl + 0\nZoom Out = Ctrl + Subtract", "Help");
+            MessageBox.Show("Add // to comment a line\nBookmark Line = Ctrl + B\nClear Word Left = Ctrl + Back\nClear Word Right = Ctrl + Del\nColumn Selection Mode = Alt + Left Mouse\nCopy = Ctrl + C\nCopy = Ctrl + Ins\nCut = Ctrl + X\nCut = Shift + Del\nDisplay To Projector = F5\nFind Dialog = Ctrl + F\nFind Next = F3\nGo Down in Column Selection Mode = Alt + Shift + Down\nGo Left in Column Selection Mode = Alt + Shift + Left\nGo Right in Column Selection Mode = Alt + Shift + Right\nGo Up in Column Selection Mode = Alt + Shift + Up\nGoTo Dialog = Ctrl + G\nLowerCase = Ctrl + Shift + U\nMove Selected Lines Down = Alt + Down\nMove Selected Lines Up = Alt + Up\nNext Bookmark = Ctrl + N\nNext Verse = F1\nNext Verse = Alt + Z\nPaste = Shift + Ins\nPrevious Bookmark = Ctrl + Shift + N\nPrevious Verse = F2\nPrevious Verse = Alt + X\nRedo = Ctrl + R\nReplace Dialog = Ctrl + H\nScroll Down = Ctrl + Down\nScroll Up = Ctrl + Up\nShow/Hide Psalm 96:1 = Alt + P\nShow/Hide Text = Alt + T\nSleep Mode = Alt + S\nUnbookmark Line = Ctrl + Shift + B\nUndo = Alt + Back\nUndo = Ctrl + Z\nUpperCase = Ctrl + U\nZoom In = Ctrl + Add\nZoom In = Ctrl + Mouse Wheel Down\nZoom In = Ctrl + Mouse Wheel Up\nZoom Normal = Ctrl + 0\nZoom Out = Ctrl + Subtract", "Help");
         }
 
         private void btnAbout_Click(object sender, RoutedEventArgs e)
@@ -424,14 +424,7 @@ namespace Psalm_96
                     break;
 
                 case (Key.F5):
-                    if ((bool)tgbtnControlDisplay.IsChecked)
-                    {
-                        tgbtnControlDisplay.IsChecked = false;
-                    }
-                    else
-                    {
-                        tgbtnControlDisplay.IsChecked = true;
-                    }
+                    tgbtnControlDisplay.IsChecked = !tgbtnControlDisplay.IsChecked;
                     fctbContent.Focus();
                     e.Handled = true;
                     break;
@@ -439,46 +432,65 @@ namespace Psalm_96
                 case (Key.S):
                     if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
                     {
-                        if ((bool)tgbtnControlSleep.IsChecked)
-                        {
-                            tgbtnControlSleep.IsChecked = false;
-                        }
-                        else
-                        {
-                            tgbtnControlSleep.IsChecked = true;
-                        }
+                        SaveChange(lstSong.SelectedIndex);
+                        fctbContent.Focus();
+                        e.Handled = true;
+                    }
+                    break;
+            }
+
+            //handle ALT key press
+            switch (e.SystemKey)
+            {
+                case (Key.Z):
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    {
+                        NextVerse();
+                        fctbContent.Focus();
+                        e.Handled = true;
+                    }
+                    break;
+
+                case (Key.X):
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    {
+                        PreviousVerse();
+                        fctbContent.Focus();
+                        e.Handled = true;
+                    }
+                    break;
+
+                case (Key.S):
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    {
+                        tgbtnControlSleep.IsChecked = !tgbtnControlSleep.IsChecked;
                         fctbContent.Focus();
                         e.Handled = true;
                     }
                     break;
 
                 case (Key.T):
-                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                     {
-                        if ((bool)tgbtnControlDisplayText.IsChecked)
-                        {
-                            tgbtnControlDisplayText.IsChecked = false;
-                        }
-                        else
-                        {
-                            tgbtnControlDisplayText.IsChecked = true;
-                        }
+                        tgbtnControlDisplayText.IsChecked = !tgbtnControlDisplayText.IsChecked;
                         fctbContent.Focus();
                         e.Handled = true;
                     }
                     break;
 
                 case (Key.P):
-                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                     {
-                        if ((bool)tgbtnControlDisplayPsalm.IsChecked)
-                        {
-                            tgbtnControlDisplayPsalm.IsChecked = false;
-                        }
-                        else
-                        {
-                            tgbtnControlDisplayPsalm.IsChecked = true;
-                        }
+                        tgbtnControlDisplayPsalm.IsChecked = !tgbtnControlDisplayPsalm.IsChecked;
+                        fctbContent.Focus();
+                        e.Handled = true;
+                    }
+                    break;
+
+                case (Key.V):
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    {
+                        tgbtnControlLockVideo.IsChecked = !tgbtnControlLockVideo.IsChecked;
                         fctbContent.Focus();
                         e.Handled = true;
                     }
@@ -551,7 +563,7 @@ namespace Psalm_96
                 try
                 {
                     Song s = lstSong.SelectedItem as Song;
-                    cbxVideo.SelectedItem = s.VideoName;
+                    if (!(bool)tgbtnControlLockVideo.IsChecked) cbxVideo.SelectedItem = s.VideoName;
                     sldVideoSpeed.Value = s.VideoSpeed;
                     sldTransitionSpeed.Value = s.TransitionSpeed;
                     fctbContent.Text = s.Content;
