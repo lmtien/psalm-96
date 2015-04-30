@@ -176,7 +176,7 @@ namespace Psalm_96
 
         private void btnHelp_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Add // to comment a line\nBookmark Line = Ctrl + B\nClear Word Left = Ctrl + Back\nClear Word Right = Ctrl + Del\nColumn Selection Mode = Alt + Left Mouse\nCopy = Ctrl + C\nCopy = Ctrl + Ins\nCut = Ctrl + X\nCut = Shift + Del\nDisplay To Projector = F5\nFind Dialog = Ctrl + F\nFind Next = F3\nGo Down in Column Selection Mode = Alt + Shift + Down\nGo Left in Column Selection Mode = Alt + Shift + Left\nGo Right in Column Selection Mode = Alt + Shift + Right\nGo Up in Column Selection Mode = Alt + Shift + Up\nGoTo Dialog = Ctrl + G\nLowerCase = Ctrl + Shift + U\nMove Selected Lines Down = Alt + Down\nMove Selected Lines Up = Alt + Up\nNext Bookmark = Ctrl + N\nNext Verse = F1\nNext Verse = Alt + Z\nPaste = Shift + Ins\nPrevious Bookmark = Ctrl + Shift + N\nPrevious Verse = F2\nPrevious Verse = Alt + X\nRedo = Ctrl + R\nReplace Dialog = Ctrl + H\nScroll Down = Ctrl + Down\nScroll Up = Ctrl + Up\nShow/Hide Psalm 96:1 = Alt + P\nShow/Hide Text = Alt + T\nSleep Mode = Alt + S\nUnbookmark Line = Ctrl + Shift + B\nUndo = Alt + Back\nUndo = Ctrl + Z\nUpperCase = Ctrl + U\nZoom In = Ctrl + Add\nZoom In = Ctrl + Mouse Wheel Down\nZoom In = Ctrl + Mouse Wheel Up\nZoom Normal = Ctrl + 0\nZoom Out = Ctrl + Subtract", "Help");
+            MessageBox.Show("Add // to comment a line\nAdd ## to add a blank line\nBookmark Line = Ctrl + B\nClear Word Left = Ctrl + Back\nClear Word Right = Ctrl + Del\nColumn Selection Mode = Alt + Left Mouse\nCopy = Ctrl + C\nCopy = Ctrl + Ins\nCut = Ctrl + X\nCut = Shift + Del\nDisplay To Projector = F5\nFind Dialog = Ctrl + F\nFind Next = F3\nGo Down in Column Selection Mode = Alt + Shift + Down\nGo Left in Column Selection Mode = Alt + Shift + Left\nGo Right in Column Selection Mode = Alt + Shift + Right\nGo Up in Column Selection Mode = Alt + Shift + Up\nGoTo Dialog = Ctrl + G\nLowerCase = Ctrl + Shift + U\nMove Selected Lines Down = Alt + Down\nMove Selected Lines Up = Alt + Up\nNext Bookmark = Ctrl + N\nNext Verse = F1\nNext Verse = Alt + Z\nPaste = Shift + Ins\nPrevious Bookmark = Ctrl + Shift + N\nPrevious Verse = F2\nPrevious Verse = Alt + X\nRedo = Ctrl + R\nReplace Dialog = Ctrl + H\nScroll Down = Ctrl + Down\nScroll Up = Ctrl + Up\nShow/Hide Psalm 96:1 = Alt + P\nShow/Hide Text = Alt + T\nSleep Mode = Alt + S\nUnbookmark Line = Ctrl + Shift + B\nUndo = Alt + Back\nUndo = Ctrl + Z\nUpperCase = Ctrl + U\nZoom In = Ctrl + Add\nZoom In = Ctrl + Mouse Wheel Down\nZoom In = Ctrl + Mouse Wheel Up\nZoom Normal = Ctrl + 0\nZoom Out = Ctrl + Subtract", "Help");
         }
 
         private void btnAbout_Click(object sender, RoutedEventArgs e)
@@ -224,7 +224,11 @@ namespace Psalm_96
                     if (Common.CURRENT_BACKGROUND) fctbContent[currentLine].BackgroundBrush = System.Drawing.Brushes.Khaki;
 
                     //check comment
-                    if (fctbContent[currentLine].Text.IndexOf("//") < 0) result.Add(fctbContent[currentLine].Text);
+                    if (fctbContent[currentLine].Text.IndexOf("##") >= 0)
+                        result.Add("");
+                    else if (fctbContent[currentLine].Text.IndexOf("//") < 0)
+                        result.Add(fctbContent[currentLine].Text);
+                    
                     currentLine++;
                 }
             }
@@ -540,7 +544,7 @@ namespace Psalm_96
                 }
             }
 
-            SaveChangeEnable();
+            if (!(bool)tgbtnControlLockVideo.IsChecked) SaveChangeEnable();
         }
 
         private void lstSong_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -673,7 +677,7 @@ namespace Psalm_96
             {
                 Song s = lstSong.Items[idx] as Song;
                 s.Content = fctbContent.Text;
-                s.VideoName = cbxVideo.SelectedValue.ToString();
+                if (!(bool)tgbtnControlLockVideo.IsChecked) s.VideoName = cbxVideo.SelectedValue.ToString();
                 s.VideoSpeed = sldVideoSpeed.Value;
                 s.TransitionSpeed = sldTransitionSpeed.Value;
 

@@ -20,8 +20,8 @@
         <Grid Name="grdText">
             <Viewbox>
                 <Grid>
-                    <TextBlock Text="@@@@@@@@@@@@@@@@" TextAlignment="Center" Foreground="Transparent"/>
-                    <TextBlock TextAlignment="Center" Name="txtbText" Foreground="White" FontFamily="Georgia">
+                    <TextBlock Text="@@@@@@@@@@@@@@@@" TextAlignment="Center" Foreground="Transparent" FontFamily="Georgia" Padding="10,0" />
+                    <TextBlock TextAlignment="Center" Name="txtbText" Foreground="White" FontFamily="Georgia" Padding="10,0" >
                                 <TextBlock.Effect>
                                     <DropShadowEffect ShadowDepth="1" BlurRadius="2" />
                                 </TextBlock.Effect>
@@ -31,8 +31,8 @@
 
             <Viewbox>
                 <Grid>
-                    <TextBlock Text="@@@@@@@@@@@@@@@@" TextAlignment="Center" Foreground="Transparent"/>
-                    <TextBlock TextAlignment="Center" Name="txtbText2" Foreground="White" FontFamily="Georgia" Opacity="0">
+                    <TextBlock Text="@@@@@@@@@@@@@@@@" TextAlignment="Center" Foreground="Transparent" FontFamily="Georgia" Padding="10,0" />
+                    <TextBlock TextAlignment="Center" Name="txtbText2" Foreground="White" FontFamily="Georgia" Opacity="0" Padding="10,0" >
                                 <TextBlock.Effect>
                                     <DropShadowEffect ShadowDepth="1" BlurRadius="2" />
                                 </TextBlock.Effect>
