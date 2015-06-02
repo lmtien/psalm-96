@@ -51,14 +51,6 @@ namespace Psalm_96
         }
 
         /// <summary>
-        /// Set speed for the video
-        /// </summary>
-        public void SetSpeedRatio(double ratio)
-        {
-            mediaElement.SpeedRatio = ratio;
-        }
-
-        /// <summary>
         /// Show black cover for sleep mode
         /// </summary>
         public void ShowBlackCover(double transitionSpeed)
@@ -110,19 +102,20 @@ namespace Psalm_96
             }
         }
 
-        private void mediaElement_MediaEnded(object sender, RoutedEventArgs e)
-        {
-            mediaElement.Position = TimeSpan.Zero;
-            mediaElement.LoadedBehavior = MediaState.Manual;
-            mediaElement.Play();
-        }
-
         /// <summary>
         /// Display video from source
         /// </summary>
-        public void DisplayVideo(Uri source)
+        public void DisplayVideo()
         {
-            mediaElement.Source = source;
+            vlcImage.SetBinding(Image.SourceProperty, Common.vlcBinding);
+        }
+
+        /// <summary>
+        /// Display image from source
+        /// </summary>
+        public void DisplayImage()
+        {
+            imgBackground.SetBinding(Image.SourceProperty, Common.imgBinding);
         }
     }
 }

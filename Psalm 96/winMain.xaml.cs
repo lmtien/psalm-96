@@ -17,6 +17,10 @@ using FastColoredTextBoxNS;
 using System.IO;
 using System.Collections.ObjectModel;
 using Newtonsoft.Json;
+using Vlc.DotNet.Wpf;
+using Vlc.DotNet.Core;
+using Vlc.DotNet.Core.Interops.Signatures.LibVlc.MediaListPlayer;
+using Vlc.DotNet.Core.Medias;
 
 namespace Psalm_96
 {
@@ -29,7 +33,11 @@ namespace Psalm_96
         double transitionSpeed;
         string currentText;
         int currentSongIndex;
+        bool SongListLock = false; //for checking selection changed in song list
+        bool PlaylistLock = false; //for checking selection changed in playlist
         ObservableCollection<Song> SongList = new ObservableCollection<Song>();
+        ObservableCollection<Song> Playlist = new ObservableCollection<Song>();
+        VlcControl vlcPlayer = new VlcControl();
 
         //init Display window
         winDisplay winDis = new winDisplay();
@@ -43,7 +51,45 @@ namespace Psalm_96
 
             InitVideo();
 
+            InitImage();
+
             InitSongList();
+
+            InitVlc();
+        }
+
+        /// <summary>
+        /// Pre Init all things need for VLC
+        /// </summary>
+        //private void PreInitVlc()
+        //{
+        //    //Set libvlc.dll and libvlccore.dll directory path
+        //    VlcContext.LibVlcDllsPath = CommonStrings.LIBVLC_DLLS_PATH_DEFAULT_VALUE_AMD64;
+        //    //Set the vlc plugins directory path
+        //    VlcContext.LibVlcPluginsPath = CommonStrings.PLUGINS_PATH_DEFAULT_VALUE_AMD64;
+
+        //    //Set the startup options
+        //    VlcContext.StartupOptions.IgnoreConfig = true;
+        //    VlcContext.StartupOptions.LogOptions.LogInFile = false;
+        //    VlcContext.StartupOptions.LogOptions.ShowLoggerConsole = false;
+
+        //    //Initialize the VlcContext
+        //    VlcContext.Initialize();
+        //}
+
+        /// <summary>
+        /// Init all stage for VLC
+        /// </summary>
+        private void InitVlc()
+        {
+            vlcPlayer.PlaybackMode = PlaybackModes.Repeat;
+            //vlcPlayer.AudioProperties.IsMute = true;
+            gridPreview.Children.Add(vlcPlayer);
+
+            //Binding
+            Common.vlcBinding.Source = vlcPlayer;
+            vlcImage.SetBinding(Image.SourceProperty, Common.vlcBinding);
+            winDis.DisplayVideo();
         }
 
         /// <summary>
@@ -57,13 +103,32 @@ namespace Psalm_96
             //add none first
             cbxVideo.Items.Add(Common.VIDEO_NONE);
 
-            List<string> video = GetFiles(Common.VIDEO_DIR);
+            List<string> video = GetFiles(Common.VIDEO_DIR, Common.VIDEO_EXTS);
             foreach (string v in video)
             {
                 cbxVideo.Items.Add(System.IO.Path.GetFileName(v));
             }
 
             cbxVideo.SelectedIndex = 0;
+        }
+
+        /// <summary>
+        /// Init image folder, and add to combobox item
+        /// </summary>
+        private void InitImage()
+        {
+            //create folder video
+            Directory.CreateDirectory(Common.IMAGE_DIR);
+
+            List<string> image = GetFiles(Common.IMAGE_DIR, Common.IMAGE_EXTS);
+            foreach (string img in image)
+            {
+                cbxVideo.Items.Add(System.IO.Path.GetFileName(img));
+            }
+
+            //Binding
+            Common.imgBinding.Source = imgPreview;
+            winDis.DisplayImage();
         }
 
         /// <summary>
@@ -74,7 +139,7 @@ namespace Psalm_96
             //create folder data
             Directory.CreateDirectory(Common.DATA_DIR);
 
-            string[] data = Directory.GetFiles(Common.DATA_DIR, "*" + Common.DATA_EXTS);
+            string[] data = Directory.GetFiles(Common.DATA_DIR, "*" + Common.DATA_EXTS).OrderBy(x => x).ToArray();
 
             foreach (string d in data)
             {
@@ -83,6 +148,9 @@ namespace Psalm_96
                     Song s = JsonConvert.DeserializeObject<Song>(File.ReadAllText(d));
 
                     SongList.Add(s);
+
+                    //add current playlist
+                    if (s.Playlist) Playlist.Add(s);
                 }
                 catch
                 {
@@ -90,29 +158,34 @@ namespace Psalm_96
             }
 
             lstSong.ItemsSource = SongList;
+            lstPlaylist.ItemsSource = Playlist;
         }
 
         /// <summary>
         /// Return all files in folder, with pre-define filters in Common.cs
         /// </summary>
-        private List<string> GetFiles(string path)
+        private List<string> GetFiles(string path, string[] EXTS)
         {
-            return Directory.EnumerateFiles(path, "*.*", SearchOption.TopDirectoryOnly).Where(f => Common.VIDEO_EXTS.Contains(System.IO.Path.GetExtension(f).ToLower())).OrderBy(x => x).ToList();
+            return Directory.EnumerateFiles(path, "*.*", SearchOption.TopDirectoryOnly).Where(f => EXTS.Contains(System.IO.Path.GetExtension(f).ToLower())).OrderBy(x => x).ToList();
         }
 
         private void gridSideLeft_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            gridSideLeft.RowDefinitions[2].Height = new GridLength((gridPreview.ActualWidth * 9) / 16);
+            gridSideLeft.RowDefinitions[1].Height = new GridLength((gridPreview.ActualWidth * 3) / 4); //9, 16
         }
 
         private void btnHelp_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Add // to comment a line\nBookmark Line = Ctrl + B\nClear Word Left = Ctrl + Back\nClear Word Right = Ctrl + Del\nColumn Selection Mode = Alt + Left Mouse\nCopy = Ctrl + C\nCopy = Ctrl + Ins\nCut = Ctrl + X\nCut = Shift + Del\nDisplay To Projector = F5\nFind Dialog = Ctrl + F\nFind Next = F3\nGo Down in Column Selection Mode = Alt + Shift + Down\nGo Left in Column Selection Mode = Alt + Shift + Left\nGo Right in Column Selection Mode = Alt + Shift + Right\nGo Up in Column Selection Mode = Alt + Shift + Up\nGoTo Dialog = Ctrl + G\nLowerCase = Ctrl + Shift + U\nMove Selected Lines Down = Alt + Down\nMove Selected Lines Up = Alt + Up\nNext Bookmark = Ctrl + N\nNext Verse = F1\nNext Verse = Ctrl + Alt + Down\nPaste = Shift + Ins\nPrevious Bookmark = Ctrl + Shift + N\nPrevious Verse = F2\nPrevious Verse = Ctrl + Alt + Up\nRedo = Ctrl + R\nReplace Dialog = Ctrl + H\nScroll Down = Ctrl + Down\nScroll Up = Ctrl + Up\nShow/Hide Psalm 96:1 = Ctrl + P\nShow/Hide Text = Ctrl + T\nSleep Mode = Ctrl + S\nUnbookmark Line = Ctrl + Shift + B\nUndo = Alt + Back\nUndo = Ctrl + Z\nUpperCase = Ctrl + U\nZoom In = Ctrl + Add\nZoom In = Ctrl + Mouse Wheel Down\nZoom In = Ctrl + Mouse Wheel Up\nZoom Normal = Ctrl + 0\nZoom Out = Ctrl + Subtract", "Help");
+            MessageBox.Show("Add // to comment a line\nAdd ## to add a blank line\nBookmark Line = Ctrl + B\nClear Word Left = Ctrl + Back\nClear Word Right = Ctrl + Del\nColumn Selection Mode = Alt + Left Mouse\nCopy = Ctrl + C\nCopy = Ctrl + Ins\nCut = Ctrl + X\nCut = Shift + Del\nDisplay To Projector = F5\nFind Dialog = Ctrl + F\nFind Next = F3\nGo Down in Column Selection Mode = Alt + Shift + Down\nGo Left in Column Selection Mode = Alt + Shift + Left\nGo Right in Column Selection Mode = Alt + Shift + Right\nGo Up in Column Selection Mode = Alt + Shift + Up\nGoTo Dialog = Ctrl + G\nLowerCase = Ctrl + Shift + U\nMove Selected Lines Down = Alt + Down\nMove Selected Lines Up = Alt + Up\nNext Bookmark = Ctrl + N\nNext Verse = F1\nNext Verse = Alt + Z\nPaste = Shift + Ins\nPrevious Bookmark = Ctrl + Shift + N\nPrevious Verse = F2\nPrevious Verse = Alt + X\nRedo = Ctrl + R\nReplace Dialog = Ctrl + H\nScroll Down = Ctrl + Down\nScroll Up = Ctrl + Up\nShow/Hide Psalm 96:1 = Alt + P\nShow/Hide Text = Alt + T\nSleep Mode = Alt + S\nUnbookmark Line = Ctrl + Shift + B\nUndo = Alt + Back\nUndo = Ctrl + Z\nUpperCase = Ctrl + U\nZoom In = Ctrl + Add\nZoom In = Ctrl + Mouse Wheel Down\nZoom In = Ctrl + Mouse Wheel Up\nZoom Normal = Ctrl + 0\nZoom Out = Ctrl + Subtract", "Help");
         }
 
         private void btnAbout_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Copyright © 2014 by Tidus Le\nAll Rights Reserved\nAll Wrongs Rejected\n\nFeedback: Lmtien9116@gmail.com\nVietnamese Community\nHope Church Singapore", "About");
+            //Hope Church
+            MessageBox.Show("Psalm 96 version " + Common.VERSION + "\nCopyright © 2014 by Tidus Le\nAll Rights Reserved\nAll Wrongs Rejected\n\nFeedback: Lmtien9116@gmail.com\nVietnamese Community\nHope Church Singapore\n\nThis is totally FREE software.\nBut please send me an email.\nSo that I can inform and send you new update version.\nThank you for using this software!", "About");
+
+            //Bethel Church
+            //MessageBox.Show("Psalm 96 version " + Common.VERSION + "\nCopyright © 2014 by Tidus Le\nAll Rights Reserved\nAll Wrongs Rejected\n\nFeedback: Lmtien9116@gmail.com\nBethel Evangelical Church Vietnam\n\nThis is totally FREE software.\nBut please send me an email.\nSo that I can inform and send you new update version.\nThank you for using this software!", "About");
         }
 
         private void fctbContent_SelectionChanged(object sender, EventArgs e)
@@ -151,7 +224,11 @@ namespace Psalm_96
                     if (Common.CURRENT_BACKGROUND) fctbContent[currentLine].BackgroundBrush = System.Drawing.Brushes.Khaki;
 
                     //check comment
-                    if (fctbContent[currentLine].Text.IndexOf("//") < 0) result.Add(fctbContent[currentLine].Text);
+                    if (fctbContent[currentLine].Text.IndexOf("##") >= 0)
+                        result.Add("");
+                    else if (fctbContent[currentLine].Text.IndexOf("//") < 0)
+                        result.Add(fctbContent[currentLine].Text);
+                    
                     currentLine++;
                 }
             }
@@ -202,8 +279,7 @@ namespace Psalm_96
         {
             lblVideoSpeed.Content = ((int)Math.Round(sldVideoSpeed.Value)).ToString() + "%";
             double ratio = sldVideoSpeed.Value / 100;
-            mediaElement.SpeedRatio = ratio;
-            winDis.SetSpeedRatio(ratio);
+            vlcPlayer.Rate = (float)ratio;
 
             SaveChangeEnable();
         }
@@ -234,13 +310,6 @@ namespace Psalm_96
             Application.Current.Shutdown();
         }
 
-        private void mediaElement_MediaEnded(object sender, RoutedEventArgs e)
-        {
-            mediaElement.Position = TimeSpan.Zero;
-            mediaElement.LoadedBehavior = MediaState.Manual;
-            mediaElement.Play();
-        }
-
         private void tgbtnControlDisplayText_Checked(object sender, RoutedEventArgs e)
         {
             winDis.ShowText(transitionSpeed);
@@ -255,8 +324,8 @@ namespace Psalm_96
 
         private void tgbtnControlDisplayPsalm_Checked(object sender, RoutedEventArgs e)
         {
-            string psalm = @"Sing to the Lord a new song             
-         Sing to the Lord, all the earth   
+            string psalm = @"Sing to the Lord a new song;             
+         Sing to the Lord, all the earth.   
                                                 Psalm 96:1   ";
             DisplayText(psalm);
         }
@@ -359,14 +428,7 @@ namespace Psalm_96
                     break;
 
                 case (Key.F5):
-                    if ((bool)tgbtnControlDisplay.IsChecked)
-                    {
-                        tgbtnControlDisplay.IsChecked = false;
-                    }
-                    else
-                    {
-                        tgbtnControlDisplay.IsChecked = true;
-                    }
+                    tgbtnControlDisplay.IsChecked = !tgbtnControlDisplay.IsChecked;
                     fctbContent.Focus();
                     e.Handled = true;
                     break;
@@ -374,46 +436,68 @@ namespace Psalm_96
                 case (Key.S):
                     if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
                     {
-                        if ((bool)tgbtnControlSleep.IsChecked)
-                        {
-                            tgbtnControlSleep.IsChecked = false;
-                        }
-                        else
-                        {
-                            tgbtnControlSleep.IsChecked = true;
-                        }
+                        SaveChange(lstSong.SelectedIndex);
+                        fctbContent.Focus();
+                        e.Handled = true;
+                    }
+                    break;
+            }
+
+            //handle ALT key press
+            switch (e.SystemKey)
+            {
+                case (Key.Z):
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    {
+                        NextVerse();
+                        fctbContent.Focus();
+                        e.Handled = true;
+                    }
+                    break;
+
+                case (Key.X):
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    {
+                        PreviousVerse();
+                        fctbContent.Focus();
+                        e.Handled = true;
+                    }
+                    break;
+
+                case (Key.S):
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    {
+                        tgbtnControlSleep.IsChecked = !tgbtnControlSleep.IsChecked;
+                        fctbContent.Focus();
                         fctbContent.Focus();
                         e.Handled = true;
                     }
                     break;
 
                 case (Key.T):
-                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                     {
-                        if ((bool)tgbtnControlDisplayText.IsChecked)
-                        {
-                            tgbtnControlDisplayText.IsChecked = false;
-                        }
-                        else
-                        {
-                            tgbtnControlDisplayText.IsChecked = true;
-                        }
+                        tgbtnControlDisplayText.IsChecked = !tgbtnControlDisplayText.IsChecked;
+                        fctbContent.Focus();
                         fctbContent.Focus();
                         e.Handled = true;
                     }
                     break;
 
                 case (Key.P):
-                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                     {
-                        if ((bool)tgbtnControlDisplayPsalm.IsChecked)
-                        {
-                            tgbtnControlDisplayPsalm.IsChecked = false;
-                        }
-                        else
-                        {
-                            tgbtnControlDisplayPsalm.IsChecked = true;
-                        }
+                        tgbtnControlDisplayPsalm.IsChecked = !tgbtnControlDisplayPsalm.IsChecked;
+                        fctbContent.Focus();
+                        fctbContent.Focus();
+                        e.Handled = true;
+                    }
+                    break;
+
+                case (Key.V):
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    {
+                        tgbtnControlLockVideo.IsChecked = !tgbtnControlLockVideo.IsChecked;
                         fctbContent.Focus();
                         e.Handled = true;
                     }
@@ -434,27 +518,36 @@ namespace Psalm_96
 
         private void cbxVideo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string video = cbxVideo.SelectedValue.ToString();
-            if (video.Equals(Common.VIDEO_NONE))
+            string fileName = cbxVideo.SelectedValue.ToString();
+            if (fileName.Equals(Common.VIDEO_NONE))
             {
-                mediaElement.Source = null;
-                winDis.DisplayVideo(null);
+                vlcPlayer.VideoSource = null;
+                imgPreview.Source = null;
             }
             else
             {
-                try
+                //check video
+                if (Common.VIDEO_EXTS.Contains(System.IO.Path.GetExtension(fileName).ToLower()))
                 {
-                    Uri sr = new Uri(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, Common.VIDEO_DIR, video));
-                    mediaElement.Source = sr;
-                    winDis.DisplayVideo(sr);
+                    imgPreview.Source = null;
+                    try
+                    {
+                        PathMedia sr = new PathMedia(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, Common.VIDEO_DIR, fileName));
+                        vlcPlayer.Media = sr;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Cannot open video file. Please try again later!\n\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
-                catch (Exception ex)
+                else //image
                 {
-                    MessageBox.Show("Cannot open video file. Please try again later!\n\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    vlcPlayer.VideoSource = null;
+                    imgPreview.Source = new BitmapImage(new Uri(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, Common.IMAGE_DIR, fileName)));
                 }
             }
 
-            SaveChangeEnable();
+            if (!(bool)tgbtnControlLockVideo.IsChecked) SaveChangeEnable();
         }
 
         private void lstSong_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -477,7 +570,7 @@ namespace Psalm_96
                 try
                 {
                     Song s = lstSong.SelectedItem as Song;
-                    cbxVideo.SelectedItem = s.VideoName;
+                    if (!(bool)tgbtnControlLockVideo.IsChecked) cbxVideo.SelectedItem = s.VideoName;
                     sldVideoSpeed.Value = s.VideoSpeed;
                     sldTransitionSpeed.Value = s.TransitionSpeed;
                     fctbContent.Text = s.Content;
@@ -487,10 +580,36 @@ namespace Psalm_96
                     MessageBox.Show("Cannot load song file!\n\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
-                //enabke controls
+                //enable controls
                 btnDelete.IsEnabled = true;
                 btnSave.IsEnabled = false;
             }
+
+            //check everything for playlist
+            var songs = lstSong.SelectedItems;
+            btnPlaylistAdd.IsEnabled = false;
+            btnPlaylistRemove.IsEnabled = false;
+
+            //lock selection changed
+            SongListLock = true;
+
+            if (!PlaylistLock) lstPlaylist.SelectedIndex = -1;
+            foreach (Song s in songs)
+            {
+                if (!s.Playlist)
+                {
+                    btnPlaylistAdd.IsEnabled = true;
+                }
+                else
+                {
+                    btnPlaylistRemove.IsEnabled = true;
+                }
+
+                if ((!PlaylistLock) && (Playlist.Contains(s))) (lstPlaylist.ItemContainerGenerator.ContainerFromItem(s) as ListViewItem).IsSelected = true;
+            }
+            
+            //release selection changed
+            SongListLock = false;
         }
 
         /// <summary>
@@ -525,9 +644,9 @@ namespace Psalm_96
                     s.VideoSpeed = Common.VIDEO_SPEED;
                     s.TransitionSpeed = Common.TRANSITION_SPEED;
                     s.Content = string.Empty;
+                    s.Playlist = false;
 
-                    //write to file
-                    File.WriteAllText(System.IO.Path.Combine(Common.DATA_DIR, s.SongName + Common.DATA_EXTS), JsonConvert.SerializeObject(s));
+                    s.Save();
 
                     //Add to list
                     SongList.Add(s);
@@ -561,12 +680,11 @@ namespace Psalm_96
             {
                 Song s = lstSong.Items[idx] as Song;
                 s.Content = fctbContent.Text;
-                s.VideoName = cbxVideo.SelectedValue.ToString();
+                if (!(bool)tgbtnControlLockVideo.IsChecked) s.VideoName = cbxVideo.SelectedValue.ToString();
                 s.VideoSpeed = sldVideoSpeed.Value;
                 s.TransitionSpeed = sldTransitionSpeed.Value;
 
-                //write to file
-                File.WriteAllText(System.IO.Path.Combine(Common.DATA_DIR, s.SongName + Common.DATA_EXTS), JsonConvert.SerializeObject(s));
+                s.Save();
 
                 btnSave.IsEnabled = false;
             }
@@ -585,18 +703,23 @@ namespace Psalm_96
         {
             if (MessageBox.Show("Are you sure you want to delete this song?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
-                try
+                var songs = lstSong.SelectedItems;
+                while (songs.Count > 0)
                 {
-                    Song s = lstSong.SelectedItem as Song;
+                    Song s = songs[0] as Song;
+                    try
+                    {
+                        //delete file
+                        File.Delete(System.IO.Path.Combine(Common.DATA_DIR, s.SongName + Common.DATA_EXTS));
 
-                    //delete file
-                    File.Delete(System.IO.Path.Combine(Common.DATA_DIR, s.SongName + Common.DATA_EXTS));
-
-                    SongList.Remove(s);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Cannot delete this song. Please try again later!\n\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        SongList.Remove(s);
+                        if (Playlist.Contains(s)) Playlist.Remove(s);
+                        songs.Remove(s);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Cannot delete this song. Please try again later!\n\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
             }
         }
@@ -607,6 +730,64 @@ namespace Psalm_96
             {
                 SaveChange(currentSongIndex);
             }
+
+            // Close the context. 
+            //VlcContext.CloseAll();
+        }
+
+        private void btnPlaylistAdd_Click(object sender, RoutedEventArgs e)
+        {
+            var songs = lstSong.SelectedItems;
+            foreach (Song s in songs)
+            {
+                //check existed
+                if (!Playlist.Contains(s))
+                {
+                    //change state
+                    s.Playlist = true;
+                    s.Save();
+
+                    //add playlist
+                    Playlist.Add(s);
+                }
+            }
+        }
+
+        private void btnPlaylistRemove_Click(object sender, RoutedEventArgs e)
+        {
+            var songs = lstSong.SelectedItems;
+            foreach (Song s in songs)
+            {
+                //check existed
+                if (Playlist.Contains(s))
+                {
+                    //change state
+                    s.Playlist = false;
+                    s.Save();
+
+                    //add playlist
+                    Playlist.Remove(s);
+                }
+            }
+        }
+
+        private void lstPlaylist_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //check selection change in songlist
+            if (SongListLock) return;
+
+            //lock selection changed
+            PlaylistLock = true;
+
+            var songs = lstPlaylist.SelectedItems;
+            lstSong.SelectedIndex = -1;
+            foreach (Song s in songs)
+            {
+                (lstSong.ItemContainerGenerator.ContainerFromItem(s) as ListViewItem).IsSelected = true;
+            }
+
+            //release selection changed
+            PlaylistLock = false;
         }
     }
 }

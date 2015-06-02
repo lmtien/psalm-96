@@ -5,13 +5,23 @@
         GlowBrush="{DynamicResource AccentColorBrush}"
         Title="Psalm 96" Height="300" Width="300" ShowCloseButton="True" ShowIconOnTitleBar="False" ShowInTaskbar="False" ShowMaxRestoreButton="False" ShowMinButton="False" ShowTitleBar="False" ShowWindowCommandsOnTop="False" TitleCaps="False" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize" Closing="MetroWindow_Closing" Topmost="True" Focusable="False" Icon="/Psalm 96;component/Images/holybible.ico">
     <Grid Background="Black">
-        <MediaElement Stretch="UniformToFill" Name="mediaElement" MediaEnded="mediaElement_MediaEnded" IsMuted="True" />
+        <Image Name="imgBackground" Stretch="UniformToFill" />
+        
+        <Grid>
+            <Grid.Background>
+                <VisualBrush Stretch="UniformToFill">
+                    <VisualBrush.Visual>
+                        <Image Name="vlcImage" />
+                    </VisualBrush.Visual>
+                </VisualBrush >
+            </Grid.Background>
+        </Grid>
 
         <Grid Name="grdText">
-            <Viewbox>
+            <Viewbox VerticalAlignment="Top">
                 <Grid>
-                    <TextBlock Text="@@@@@@@@@@@@@@@@" TextAlignment="Center" Foreground="Transparent"/>
-                    <TextBlock TextAlignment="Center" Name="txtbText" Foreground="White" FontFamily="Georgia">
+                    <TextBlock Text="@@@@@@@@@@@@@@@@" TextAlignment="Center" Foreground="Transparent" FontFamily="Georgia" Padding="10,0" />
+                    <TextBlock TextAlignment="Center" Name="txtbText" Foreground="White" FontFamily="Georgia" Padding="10,0" >
                                 <TextBlock.Effect>
                                     <DropShadowEffect ShadowDepth="1" BlurRadius="2" />
                                 </TextBlock.Effect>
@@ -19,10 +29,10 @@
                 </Grid>
             </Viewbox>
 
-            <Viewbox>
+            <Viewbox VerticalAlignment="Top">
                 <Grid>
-                    <TextBlock Text="@@@@@@@@@@@@@@@@" TextAlignment="Center" Foreground="Transparent"/>
-                    <TextBlock TextAlignment="Center" Name="txtbText2" Foreground="White" FontFamily="Georgia" Opacity="0">
+                    <TextBlock Text="@@@@@@@@@@@@@@@@" TextAlignment="Center" Foreground="Transparent" FontFamily="Georgia" Padding="10,0" />
+                    <TextBlock TextAlignment="Center" Name="txtbText2" Foreground="White" FontFamily="Georgia" Opacity="0" Padding="10,0" >
                                 <TextBlock.Effect>
                                     <DropShadowEffect ShadowDepth="1" BlurRadius="2" />
                                 </TextBlock.Effect>
