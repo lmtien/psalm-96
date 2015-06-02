@@ -171,7 +171,7 @@ namespace Psalm_96
 
         private void gridSideLeft_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            gridSideLeft.RowDefinitions[1].Height = new GridLength((gridPreview.ActualWidth * 9) / 16);
+            gridSideLeft.RowDefinitions[1].Height = new GridLength((gridPreview.ActualWidth * 3) / 4); //9, 16
         }
 
         private void btnHelp_Click(object sender, RoutedEventArgs e)

@@ -18,7 +18,7 @@
         </Grid>
 
         <Grid Name="grdText">
-            <Viewbox>
+            <Viewbox VerticalAlignment="Top">
                 <Grid>
                     <TextBlock Text="@@@@@@@@@@@@@@@@" TextAlignment="Center" Foreground="Transparent" FontFamily="Georgia" Padding="10,0" />
                     <TextBlock TextAlignment="Center" Name="txtbText" Foreground="White" FontFamily="Georgia" Padding="10,0" >
@@ -29,7 +29,7 @@
                 </Grid>
             </Viewbox>
 
-            <Viewbox>
+            <Viewbox VerticalAlignment="Top">
                 <Grid>
                     <TextBlock Text="@@@@@@@@@@@@@@@@" TextAlignment="Center" Foreground="Transparent" FontFamily="Georgia" Padding="10,0" />
                     <TextBlock TextAlignment="Center" Name="txtbText2" Foreground="White" FontFamily="Georgia" Opacity="0" Padding="10,0" >
