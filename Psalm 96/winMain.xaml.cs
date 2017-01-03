@@ -19,8 +19,8 @@ using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 using Vlc.DotNet.Wpf;
 using Vlc.DotNet.Core;
-using Vlc.DotNet.Core.Interops.Signatures.LibVlc.MediaListPlayer;
-using Vlc.DotNet.Core.Medias;
+using Vlc.DotNet.Core.Interops;//.Signatures.LibVlc.MediaListPlayer;
+//using Vlc.DotNet.Core.Medias;
 
 namespace Psalm_96
 {
@@ -47,7 +47,14 @@ namespace Psalm_96
 
         public winMain()
         {
+            Common.LoadConfiguration();
+
             InitializeComponent();
+
+            //Init Window's title
+            this.Title = "Psalm 96 v" + Common.VERSION;
+
+            InitTextVAlignment();
 
             InitVideo();
 
@@ -56,6 +63,17 @@ namespace Psalm_96
             InitSongList();
 
             InitVlc();
+        }
+
+        /// <summary>
+        /// Init text vertical alignment
+        /// </summary>
+        void InitTextVAlignment()
+        {
+            //Init text vertical alignment
+            vboxText1.VerticalAlignment = Common.appConfig.TextVerticalAlignment;
+            vboxText2.VerticalAlignment = Common.appConfig.TextVerticalAlignment;
+            winDis.SetTextVerticalAlignment(Common.appConfig.TextVerticalAlignment);
         }
 
         /// <summary>
@@ -169,9 +187,17 @@ namespace Psalm_96
             return Directory.EnumerateFiles(path, "*.*", SearchOption.TopDirectoryOnly).Where(f => EXTS.Contains(System.IO.Path.GetExtension(f).ToLower())).OrderBy(x => x).ToList();
         }
 
+        /// <summary>
+        /// Auto change size of Left
+        /// </summary>
+        void UpdateSideLeftSize()
+        {
+            gridSideLeft.RowDefinitions[1].Height = new GridLength((gridPreview.ActualWidth * Common.appConfig.ScreenHeight) / Common.appConfig.ScreenWidth); //3,4 ; 9,16
+        }
+
         private void gridSideLeft_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            gridSideLeft.RowDefinitions[1].Height = new GridLength((gridPreview.ActualWidth * 3) / 4); //9, 16
+            UpdateSideLeftSize();
         }
 
         private void btnHelp_Click(object sender, RoutedEventArgs e)
@@ -181,11 +207,7 @@ namespace Psalm_96
 
         private void btnAbout_Click(object sender, RoutedEventArgs e)
         {
-            //Hope Church
             MessageBox.Show("Psalm 96 version " + Common.VERSION + "\nCopyright © 2014 by Tidus Le\nAll Rights Reserved\nAll Wrongs Rejected\n\nFeedback: Lmtien9116@gmail.com\nVietnamese Community\nHope Church Singapore\n\nThis is totally FREE software.\nBut please send me an email.\nSo that I can inform and send you new update version.\nThank you for using this software!", "About");
-
-            //Bethel Church
-            //MessageBox.Show("Psalm 96 version " + Common.VERSION + "\nCopyright © 2014 by Tidus Le\nAll Rights Reserved\nAll Wrongs Rejected\n\nFeedback: Lmtien9116@gmail.com\nBethel Evangelical Church Vietnam\n\nThis is totally FREE software.\nBut please send me an email.\nSo that I can inform and send you new update version.\nThank you for using this software!", "About");
         }
 
         private void fctbContent_SelectionChanged(object sender, EventArgs e)
@@ -252,13 +274,31 @@ namespace Psalm_96
             if (txtbPreview.Opacity == 0)
             {
                 txtbPreview2.BeginAnimation(OpacityProperty, CustomAnimation.GetDouble(1, 0, transitionSpeed));
-                txtbPreview.Text = text;
+                //check Bilingual
+                if (Common.appConfig.Bilingual && text.Contains('@'))
+                {
+                    txtbPreview.Text = "";
+                    string[] str = text.Split('@');
+                    txtbPreview.Inlines.Add(new Run(str[0]) { Foreground = Brushes.Yellow });
+                    txtbPreview.Inlines.Add(new Run(str[1]) { Foreground = Brushes.White });
+                }
+                else
+                    txtbPreview.Text = text;
                 txtbPreview.BeginAnimation(OpacityProperty, CustomAnimation.GetDouble(0, 1, transitionSpeed));
             }
             else
             {
                 txtbPreview.BeginAnimation(OpacityProperty, CustomAnimation.GetDouble(1, 0, transitionSpeed));
-                txtbPreview2.Text = text;
+                //check Bilingual
+                if (Common.appConfig.Bilingual && text.Contains('@'))
+                {
+                    txtbPreview2.Text = "";
+                    string[] str = text.Split('@');
+                    txtbPreview2.Inlines.Add(new Run(str[0]) { Foreground = Brushes.Yellow });
+                    txtbPreview2.Inlines.Add(new Run(str[1]) { Foreground = Brushes.White });
+                }
+                else
+                    txtbPreview2.Text = text;
                 txtbPreview2.BeginAnimation(OpacityProperty, CustomAnimation.GetDouble(0, 1, transitionSpeed));
             }
         }
@@ -788,6 +828,22 @@ namespace Psalm_96
 
             //release selection changed
             PlaylistLock = false;
+        }
+
+        private void btnOptions_Click(object sender, RoutedEventArgs e)
+        {
+            //show overlay
+            this.ShowOverlayAsync();
+
+            winConfiguration config = new winConfiguration();
+            if (config.ShowDialog() == true)
+            {
+                InitTextVAlignment();
+                UpdateSideLeftSize();
+            }
+
+            //hide overlay
+            this.HideOverlayAsync();
         }
     }
 }

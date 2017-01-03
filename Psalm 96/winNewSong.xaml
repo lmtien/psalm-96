@@ -6,7 +6,7 @@
         GlowBrush="{DynamicResource AccentColorBrush}"
         Title="Create a new song" Height="100" Width="215" ShowMinButton="False" ShowMaxRestoreButton="False" TitleCaps="False" PreviewKeyDown="MetroWindow_PreviewKeyDown">
     <Grid>
-        <TextBox Margin="6,6,6,0" Height="25" VerticalAlignment="Top" Controls:TextboxHelper.Watermark="Enter song's name" Name="txtSongName" TabIndex="1" KeyDown="txtSongName_KeyDown" />
+        <TextBox Margin="6,6,6,0" Height="25" VerticalAlignment="Top" Controls:TextBoxHelper.Watermark="Enter song's name" Name="txtSongName" TabIndex="1" KeyDown="txtSongName_KeyDown" />
         <Button
             Height="25"
             Margin="6,0,6,6"

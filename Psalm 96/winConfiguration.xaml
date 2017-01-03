@@ -1,0 +1,41 @@
+﻿<Controls:MetroWindow x:Class="Psalm_96.winConfiguration"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        GlowBrush="{DynamicResource AccentColorBrush}"
+        Title="Options" Height="310" Width="340" ShowMinButton="False" ShowMaxRestoreButton="False" TitleCaps="False">
+    <Grid>
+        <GroupBox Header="Screen size" Height="72" VerticalAlignment="Top" Margin="6,6,6,0">
+            <Grid>
+                <RadioButton Content="4:3" Height="20" Margin="66,6,188,0" Name="rbtnScreenSize4x3" VerticalAlignment="Top" IsChecked="True"/>
+                <RadioButton Content="16:9" Height="20" Margin="182,6,66,0" Name="rbtnScreenSize16x9" VerticalAlignment="Top" />
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Screen Vertical Alignment" Margin="6,84,6,0" Height="72" VerticalAlignment="Top">
+            <Grid>
+                <RadioButton Content="Top" Height="20" HorizontalAlignment="Left" Margin="6,6,0,0" Name="rbtnScreenVerticalAlignmentTop" VerticalAlignment="Top" />
+                <RadioButton Content="Center" Height="20" Margin="121,6,114,0" Name="rbtnScreenVerticalAlignmentCenter" VerticalAlignment="Top" IsChecked="True" />
+                <RadioButton Content="Bottom" Height="20" Margin="0,6,6,0" Name="rbtnScreenVerticalAlignmentBottom" VerticalAlignment="Top" HorizontalAlignment="Right" Width="63" />
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Language" Margin="6,162,6,0" Height="72" VerticalAlignment="Top">
+            <Grid>
+                <RadioButton Content="Monolingual" Height="20" HorizontalAlignment="Left" Margin="6,6,0,0" Name="rbtnLanguageMonolingual" VerticalAlignment="Top" IsChecked="True"/>
+                <RadioButton Content="Bilingual" Height="20" Margin="0,6,6,0" Name="rbtnLanguageBilingual" VerticalAlignment="Top" HorizontalAlignment="Right" />
+            </Grid>
+        </GroupBox>
+
+        <Button Margin="6,0,6,6"
+            Name="btnSaveConfig" Padding="0" TabIndex="2" Click="btnSaveConfig_Click" Height="25" VerticalAlignment="Bottom">
+            <DockPanel>
+                <Rectangle Width="20" Height="20" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_disk}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+                <Label Content="Save" Padding="2,0,0,0" Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" />
+            </DockPanel>
+        </Button>
+    </Grid>
+</Controls:MetroWindow>

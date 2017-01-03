@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Windows.Data;
+﻿using System.Windows.Data;
 using System.Diagnostics;
 using System.Reflection;
+using System.IO;
+using Newtonsoft.Json;
+using System.Windows;
 
 namespace Psalm_96
 {
@@ -16,6 +14,8 @@ namespace Psalm_96
 
         public const string DATA_DIR = "data";
         public const string DATA_EXTS = ".lmt";
+        public const string CONFIG_FILE = "config.lmt";
+        public static Configuration appConfig;
 
         public const bool CURRENT_BACKGROUND = true;
 
@@ -30,5 +30,23 @@ namespace Psalm_96
 
         public static Binding vlcBinding = new Binding("VideoSource");
         public static Binding imgBinding = new Binding("Source");
+
+        /// <summary>
+        /// Check and load configuration
+        /// </summary>
+        public static void LoadConfiguration()
+        {
+            if (File.Exists(CONFIG_FILE))
+                appConfig = JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(CONFIG_FILE));
+            else
+            {
+                appConfig = new Configuration();
+                appConfig.ScreenWidth = 4;
+                appConfig.ScreenHeight = 3;
+                appConfig.TextVerticalAlignment = VerticalAlignment.Center;
+                appConfig.Bilingual = true;
+                appConfig.Save();
+            }
+        }
     }
 }

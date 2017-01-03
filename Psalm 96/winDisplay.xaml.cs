@@ -27,6 +27,16 @@ namespace Psalm_96
         }
 
         /// <summary>
+        /// Set vertical alignment for text displaying
+        /// </summary>
+        public void SetTextVerticalAlignment(VerticalAlignment config)
+        {
+            //Init text vertical alignment
+            vboxText1.VerticalAlignment = config;
+            vboxText2.VerticalAlignment = config;
+        }
+
+        /// <summary>
         /// Set to set window to extend screen, but not current
         /// </summary>
         public void SetScreenToFirstNonCurrent(Screen current)
@@ -91,13 +101,31 @@ namespace Psalm_96
             if (txtbText.Opacity == 0)
             {
                 txtbText2.BeginAnimation(OpacityProperty, CustomAnimation.GetDouble(1, 0, transitionSpeed));
-                txtbText.Text = text;
+                //check Bilingual
+                if (Common.appConfig.Bilingual && text.Contains('@'))
+                {
+                    txtbText.Text = "";
+                    string[] str = text.Split('@');
+                    txtbText.Inlines.Add(new Run(str[0]) { Foreground = Brushes.Yellow });
+                    txtbText.Inlines.Add(new Run(str[1]) { Foreground = Brushes.White });
+                }
+                else
+                    txtbText.Text = text;
                 txtbText.BeginAnimation(OpacityProperty, CustomAnimation.GetDouble(0, 1, transitionSpeed));
             }
             else
             {
                 txtbText.BeginAnimation(OpacityProperty, CustomAnimation.GetDouble(1, 0, transitionSpeed));
-                txtbText2.Text = text;
+                //check Bilingual
+                if (Common.appConfig.Bilingual && text.Contains('@'))
+                {
+                    txtbText2.Text = "";
+                    string[] str = text.Split('@');
+                    txtbText2.Inlines.Add(new Run(str[0]) { Foreground = Brushes.Yellow });
+                    txtbText2.Inlines.Add(new Run(str[1]) { Foreground = Brushes.White });
+                }
+                else
+                    txtbText2.Text = text;
                 txtbText2.BeginAnimation(OpacityProperty, CustomAnimation.GetDouble(0, 1, transitionSpeed));
             }
         }

@@ -10,8 +10,18 @@
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
             <Button Content="VNLG"/>
-            <!--<Button Content="Bethel Evangelical Church"/>-->
-            
+
+            <Button Name="btnOptions" Click="btnOptions_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="15" Height="15" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_tools}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0" VerticalAlignment="Center" Text="Options" />
+                </StackPanel>
+            </Button>
+
             <Button Name="btnHelp" Click="btnHelp_Click">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="15" Height="15" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
@@ -151,7 +161,7 @@
                 </Grid>
 
                 <Grid Name="grdText">
-                    <Viewbox VerticalAlignment="Top">
+                    <Viewbox Name="vboxText1">
                         <Grid>
                             <TextBlock Text="@@@@@@@@@@@@@@@@" TextAlignment="Center" Foreground="Transparent" FontFamily="Georgia"  Padding="10,0" />
                             <TextBlock TextAlignment="Center" Name="txtbPreview" Foreground="White" FontFamily="Georgia" Padding="10,0" >
@@ -162,7 +172,7 @@
                         </Grid>
                     </Viewbox>
 
-                    <Viewbox VerticalAlignment="Top">
+                    <Viewbox Name="vboxText2">
                         <Grid>
                             <TextBlock Text="@@@@@@@@@@@@@@@@" TextAlignment="Center" Foreground="Transparent" FontFamily="Georgia"  Padding="10,0" />
                             <TextBlock TextAlignment="Center" Name="txtbPreview2" Foreground="White" FontFamily="Georgia" Opacity="0"  Padding="10,0" >

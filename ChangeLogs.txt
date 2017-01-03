@@ -1,3 +1,13 @@
+v2.3
+   - Add Bilingual
+
+v2.2
+   - Add configurable feature for "Screen Size", and "Vertical Alignment" of text displayment.
+   // Add configuration window
+   // Remove Bethel church from code
+   // Add version number to title of main window
+   // Update for MahApps Metro to latest version
+
 v2.1
    - 
 
