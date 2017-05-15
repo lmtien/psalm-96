@@ -19,8 +19,8 @@ using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 using Vlc.DotNet.Wpf;
 using Vlc.DotNet.Core;
-using Vlc.DotNet.Core.Interops;//.Signatures.LibVlc.MediaListPlayer;
-//using Vlc.DotNet.Core.Medias;
+using Vlc.DotNet.Core.Interops.Signatures.LibVlc.MediaListPlayer;
+using Vlc.DotNet.Core.Medias;
 
 namespace Psalm_96
 {
@@ -37,7 +37,8 @@ namespace Psalm_96
         bool PlaylistLock = false; //for checking selection changed in playlist
         ObservableCollection<Song> SongList = new ObservableCollection<Song>();
         ObservableCollection<Song> Playlist = new ObservableCollection<Song>();
-        VlcControl vlcPlayer = new VlcControl();
+
+        VlcControl vlcPlayer;
 
         //init Display window
         winDisplay winDis = new winDisplay();
@@ -47,6 +48,8 @@ namespace Psalm_96
 
         public winMain()
         {
+            PreInitVlc();
+
             Common.LoadConfiguration();
 
             InitializeComponent();
@@ -79,21 +82,30 @@ namespace Psalm_96
         /// <summary>
         /// Pre Init all things need for VLC
         /// </summary>
-        //private void PreInitVlc()
-        //{
-        //    //Set libvlc.dll and libvlccore.dll directory path
-        //    VlcContext.LibVlcDllsPath = CommonStrings.LIBVLC_DLLS_PATH_DEFAULT_VALUE_AMD64;
-        //    //Set the vlc plugins directory path
-        //    VlcContext.LibVlcPluginsPath = CommonStrings.PLUGINS_PATH_DEFAULT_VALUE_AMD64;
+        private void PreInitVlc()
+        {
+            //Set libvlc.dll and libvlccore.dll directory path
+            VlcContext.LibVlcDllsPath = CommonStrings.LIBVLC_DLLS_PATH_DEFAULT_VALUE_X86;
+            //Set the vlc plugins directory path
+            VlcContext.LibVlcPluginsPath = CommonStrings.PLUGINS_PATH_DEFAULT_VALUE_X86;
 
-        //    //Set the startup options
-        //    VlcContext.StartupOptions.IgnoreConfig = true;
-        //    VlcContext.StartupOptions.LogOptions.LogInFile = false;
-        //    VlcContext.StartupOptions.LogOptions.ShowLoggerConsole = false;
+            //switch to 64-bit mode
+            //MessageBox.Show(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), @"VideoLAN\VLC"));
+            //VlcContext.LibVlcDllsPath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), @"VideoLAN\VLC");
+            //VlcContext.LibVlcPluginsPath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), @"VideoLAN\VLC\plugins");
 
-        //    //Initialize the VlcContext
-        //    VlcContext.Initialize();
-        //}
+
+            //Set the startup options
+            //VlcContext.StartupOptions.IgnoreConfig = true;
+            //VlcContext.StartupOptions.LogOptions.LogInFile = false;
+            //VlcContext.StartupOptions.LogOptions.ShowLoggerConsole = false;
+
+            //Initialize the VlcContext
+            VlcContext.Initialize();
+
+            //create instance
+            vlcPlayer = new VlcControl();
+        }
 
         /// <summary>
         /// Init all stage for VLC
@@ -207,7 +219,7 @@ namespace Psalm_96
 
         private void btnAbout_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Psalm 96 version " + Common.VERSION + "\nCopyright © 2014 by Tidus Le\nAll Rights Reserved\nAll Wrongs Rejected\n\nFeedback: Lmtien9116@gmail.com\nVietnamese Community\nHope Church Singapore\n\nThis is totally FREE software.\nBut please send me an email.\nSo that I can inform and send you new update version.\nThank you for using this software!", "About");
+            MessageBox.Show("Psalm 96 version " + Common.VERSION + "\nCopyright © 2014 by Tidus Le\nAll Rights Reserved\n\nFeedback: Lmtien9116@gmail.com\nVietnamese Community\nHope Church Singapore\n\nThis is a completely FREE software.\nBut you can drop me an email.\nSo that I can inform and send the latest version you when it is available.\nThank you for using this software!", "About");
         }
 
         private void fctbContent_SelectionChanged(object sender, EventArgs e)
